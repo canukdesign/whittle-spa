@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { WhittleComponent } from './whittle/whittle.component';
-import { ProfileComponent } from './profile/profile.component';
+import { WhittlerProfileComponent } from './profile/whittler-profile.component';
+import { WhittlerRoutingModule } from './whittler-routing.module';
+import { SharedModule } from '../core/shared.module';
 
 
 
 @NgModule({
-  declarations: [WhittleComponent, ProfileComponent],
+  declarations: [WhittleComponent, WhittlerProfileComponent],
   imports: [
-    CommonModule
+    WhittlerRoutingModule,
+    SharedModule
   ]
 })
 export class WhittlerModule { }

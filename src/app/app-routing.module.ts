@@ -7,8 +7,7 @@ import { AuthGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: LandingComponent },
-  { path: 'whittler', component: WhittleComponent, canActivate: [AuthGuard] }
+  { path: 'home', component: LandingComponent }
 ];
 
 
