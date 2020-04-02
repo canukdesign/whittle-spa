@@ -13,16 +13,16 @@ export class ProfileService {
 
   constructor(private whittleApi: WhittleApiClient) { }
 
-  getUserProfile$(options?): Observable<any> {
-    return this.whittleApi.profile().pipe(
-      concatMap(
-        (profileResult) =>
-        {
-          this.profile = profileResult;
-        },
-        error => {
-        });
+  // getUserProfile$(options?): Observable<any> {
+  //   return this.whittleApi.profile().pipe(
+  //     concatMap(
+  //       (profileResult) =>
+  //       {
+  //         this.profile = profileResult;
+  //       },
+  //       error => {
+  //       });
 
-    );
-  }  
+  //   );
+  // }  
 }
