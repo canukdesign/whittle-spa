@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
-import { Whittler, WhittleApiClient } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { Whittler, WhittlerClient } from 'src/app/core/services/whittle-api/whittle-api.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,7 +16,7 @@ export class WhittlerProfileComponent implements OnInit {
 
   constructor(
       private router: Router,
-      private whittleApi: WhittleApiClient) { 
+      private whittleApi: WhittlerClient) { 
     this.initForm();
   }
 

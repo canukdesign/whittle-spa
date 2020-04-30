@@ -1,0 +1,16 @@
+
+In order to Whittle you need to register!
+
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="first name" type="text" formControlName="firstName">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="last name" type="text" formControlName="lastName">
+    </mat-form-field>
+
+    <button type="submit" [disabled]="!registrationForm.valid">Submit</button>
+
+</form>

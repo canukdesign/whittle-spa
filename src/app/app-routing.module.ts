@@ -5,11 +5,13 @@ import { LandingComponent } from './home/landing/landing.component';
 import { AuthGuard } from './core/auth/auth.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './core/auth/interceptor.service';
+import { RegistrationComponent } from './home/registration/registration.component';
 
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: LandingComponent }
+  { path: 'home', component: LandingComponent },
+  { path: 'register', component: RegistrationComponent }
 ];
 
 
