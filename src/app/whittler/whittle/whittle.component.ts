@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { WhittlerClient, Fork, Whittler, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-whittle',
@@ -8,9 +9,64 @@ import { Router } from '@angular/router';
 })
 export class WhittleComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  public currentFork: Fork;
+  public matches: Comparison[];
+  public numMatches;
+
+  constructor(
+    private router: Router,
+    private whittleApi: WhittlerClient) { 
+  }
 
   ngOnInit(): void {
+    this.whittleApi.currentFork().subscribe(
+      forkResult =>
+      {
+        this.currentFork = forkResult;
+
+
+        this.whittleApi.matches(3, 100).subscribe(
+          matchResult =>
+          {
+            this.matches = matchResult;
+            this.numMatches = this.matches.length;
+          },
+          error => {
+          })
+
+      },
+      error => {
+      })
+  }
+
+  forkLeft() {
+    console.log("went left");
+    this.fork(true);
+  }
+
+  forkRight() {
+    console.log("went right");
+    this.fork(false);
+  }
+
+  fork(left) {
+    this.whittleApi.whittlerFork(left).subscribe(
+      forkResult =>
+      {
+        this.currentFork = forkResult;
+
+        this.whittleApi.matches(3, 100).subscribe(
+          matchResult =>
+          {
+            this.matches = matchResult;
+            this.numMatches = this.matches.length;
+          },
+          error => {
+          })
+
+      },
+      error => {
+      })
   }
 
   profile() {

@@ -1,3 +1,18 @@
 <button (click)="profile()">Profile</button>
 
-<p>whittle works!</p>
+<mat-card (click)="forkLeft()">
+    {{currentFork.leftBranch}} 
+</mat-card>
+
+<mat-card (click)="forkRight()">
+    {{currentFork.rightBranch}} 
+</mat-card>
+
+{{numMatches}}
+<ul>
+    <li *ngFor="let match of matches">
+        {{match.whittlerId}} : {{match.similarity}}
+    </li>
+</ul>
+
+
