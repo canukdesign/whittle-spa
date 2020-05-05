@@ -72,4 +72,8 @@ export class WhittleComponent implements OnInit {
   profile() {
     this.router.navigate(["whittler/profile"]);
   }
+
+  atelier() {
+    this.router.navigate(["whittler/circle"]);
+  }
 }

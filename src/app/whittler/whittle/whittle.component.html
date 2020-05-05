@@ -1,4 +1,6 @@
 <button (click)="profile()">Profile</button>
+<button (click)="atelier()">Circle</button>
+
 
 <mat-card (click)="forkLeft()">
     {{currentFork.leftBranch}} 
@@ -8,11 +10,13 @@
     {{currentFork.rightBranch}} 
 </mat-card>
 
-{{numMatches}}
+Top Matching Whittlers ({{numMatches}})
+
 <ul>
     <li *ngFor="let match of matches">
         {{match.whittlerId}} : {{match.similarity}}
     </li>
 </ul>
+
 
 
