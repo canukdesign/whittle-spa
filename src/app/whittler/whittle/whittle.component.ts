@@ -19,19 +19,21 @@ export class WhittleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.whittleApi.currentFork().subscribe(
+    this.whittleApi.getCurrentFork().subscribe(
       forkResult =>
       {
         this.currentFork = forkResult;
 
 
-        this.whittleApi.matches(3, 100).subscribe(
+        this.whittleApi.getComparisons(3, 100).subscribe(
           matchResult =>
           {
             this.matches = matchResult;
             this.numMatches = this.matches.length;
           },
           error => {
+            this.matches = [];
+            this.numMatches = 0;
           })
 
       },
@@ -50,12 +52,12 @@ export class WhittleComponent implements OnInit {
   }
 
   fork(left) {
-    this.whittleApi.whittlerFork(left).subscribe(
+    this.whittleApi.takeCurrentFork(left).subscribe(
       forkResult =>
       {
         this.currentFork = forkResult;
 
-        this.whittleApi.matches(3, 100).subscribe(
+        this.whittleApi.getComparisons(3, 100).subscribe(
           matchResult =>
           {
             this.matches = matchResult;

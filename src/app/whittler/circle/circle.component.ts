@@ -18,7 +18,7 @@ export class CircleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.whittleApi.matches(3, 100).subscribe(
+    this.whittleApi.getComparisons(3, 100).subscribe(
       matchResult =>
       {
         this.matches = matchResult;

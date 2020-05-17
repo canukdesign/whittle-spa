@@ -18,7 +18,7 @@ export class RegistrationGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    return this.whittlerClient.profile().pipe(
+    return this.whittlerClient.getProfile().pipe(
       map(profile => profile.isRegistered),
       tap(registered => {
         if (!registered) {

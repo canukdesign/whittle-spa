@@ -28,7 +28,7 @@ export class WhittlerProfileComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    this.whittleApi.profile().subscribe(
+    this.whittleApi.getProfile().subscribe(
       profileResult =>
       {
         this.profile = profileResult;
@@ -48,5 +48,9 @@ export class WhittlerProfileComponent implements OnInit {
     this.router.navigate(["whittler"]);
   }
 
+
+  atelier() {
+    this.router.navigate(["circle"]);
+  }
 
 }
