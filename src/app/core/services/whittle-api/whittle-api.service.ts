@@ -27,7 +27,7 @@ export class WhittlerClient {
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
     }
 
-    register(registration: RegistrationModel): Observable<Whittler> {
+    register(registration: RegistrationModel): Observable<WhittlerDto> {
         let url_ = this.baseUrl + "/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -50,14 +50,14 @@ export class WhittlerClient {
                 try {
                     return this.processRegister(<any>response_);
                 } catch (e) {
-                    return <Observable<Whittler>><any>_observableThrow(e);
+                    return <Observable<WhittlerDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Whittler>><any>_observableThrow(response_);
+                return <Observable<WhittlerDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRegister(response: HttpResponseBase): Observable<Whittler> {
+    protected processRegister(response: HttpResponseBase): Observable<WhittlerDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -75,7 +75,7 @@ export class WhittlerClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Whittler.fromJS(resultData200);
+            result200 = WhittlerDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -83,10 +83,10 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Whittler>(<any>null);
+        return _observableOf<WhittlerDto>(<any>null);
     }
 
-    getProfile(): Observable<WhittlerProfile> {
+    getProfile(): Observable<WhittlerProfileDto> {
         let url_ = this.baseUrl + "/profile";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -105,14 +105,14 @@ export class WhittlerClient {
                 try {
                     return this.processGetProfile(<any>response_);
                 } catch (e) {
-                    return <Observable<WhittlerProfile>><any>_observableThrow(e);
+                    return <Observable<WhittlerProfileDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<WhittlerProfile>><any>_observableThrow(response_);
+                return <Observable<WhittlerProfileDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetProfile(response: HttpResponseBase): Observable<WhittlerProfile> {
+    protected processGetProfile(response: HttpResponseBase): Observable<WhittlerProfileDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -130,7 +130,7 @@ export class WhittlerClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = WhittlerProfile.fromJS(resultData200);
+            result200 = WhittlerProfileDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -138,10 +138,10 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<WhittlerProfile>(<any>null);
+        return _observableOf<WhittlerProfileDto>(<any>null);
     }
 
-    getWhittles(): Observable<Whittle[]> {
+    getWhittles(): Observable<WhittleDto[]> {
         let url_ = this.baseUrl + "/whittles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -160,14 +160,14 @@ export class WhittlerClient {
                 try {
                     return this.processGetWhittles(<any>response_);
                 } catch (e) {
-                    return <Observable<Whittle[]>><any>_observableThrow(e);
+                    return <Observable<WhittleDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Whittle[]>><any>_observableThrow(response_);
+                return <Observable<WhittleDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetWhittles(response: HttpResponseBase): Observable<Whittle[]> {
+    protected processGetWhittles(response: HttpResponseBase): Observable<WhittleDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -188,7 +188,7 @@ export class WhittlerClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(Whittle.fromJS(item));
+                    result200!.push(WhittleDto.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -197,10 +197,10 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Whittle[]>(<any>null);
+        return _observableOf<WhittleDto[]>(<any>null);
     }
 
-    getCurrentFork(): Observable<Fork> {
+    getCurrentFork(): Observable<TreeForkDto> {
         let url_ = this.baseUrl + "/forks/current";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -219,14 +219,14 @@ export class WhittlerClient {
                 try {
                     return this.processGetCurrentFork(<any>response_);
                 } catch (e) {
-                    return <Observable<Fork>><any>_observableThrow(e);
+                    return <Observable<TreeForkDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Fork>><any>_observableThrow(response_);
+                return <Observable<TreeForkDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetCurrentFork(response: HttpResponseBase): Observable<Fork> {
+    protected processGetCurrentFork(response: HttpResponseBase): Observable<TreeForkDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -244,7 +244,7 @@ export class WhittlerClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Fork.fromJS(resultData200);
+            result200 = TreeForkDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -252,10 +252,10 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Fork>(<any>null);
+        return _observableOf<TreeForkDto>(<any>null);
     }
 
-    takeCurrentFork(left: boolean): Observable<Fork> {
+    takeCurrentFork(left: boolean): Observable<TreeForkDto> {
         let url_ = this.baseUrl + "/forks/current/{left}";
         if (left === undefined || left === null)
             throw new Error("The parameter 'left' must be defined.");
@@ -277,14 +277,14 @@ export class WhittlerClient {
                 try {
                     return this.processTakeCurrentFork(<any>response_);
                 } catch (e) {
-                    return <Observable<Fork>><any>_observableThrow(e);
+                    return <Observable<TreeForkDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Fork>><any>_observableThrow(response_);
+                return <Observable<TreeForkDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processTakeCurrentFork(response: HttpResponseBase): Observable<Fork> {
+    protected processTakeCurrentFork(response: HttpResponseBase): Observable<TreeForkDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -302,7 +302,7 @@ export class WhittlerClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Fork.fromJS(resultData200);
+            result200 = TreeForkDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -310,10 +310,10 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Fork>(<any>null);
+        return _observableOf<TreeForkDto>(<any>null);
     }
 
-    getComparisons(max: number | undefined, percentage: number | undefined): Observable<Comparison[]> {
+    getComparisons(max: number | undefined, percentage: number | undefined): Observable<ComparisonDto[]> {
         let url_ = this.baseUrl + "/comparisons?";
         if (max === null)
             throw new Error("The parameter 'max' cannot be null.");
@@ -340,14 +340,14 @@ export class WhittlerClient {
                 try {
                     return this.processGetComparisons(<any>response_);
                 } catch (e) {
-                    return <Observable<Comparison[]>><any>_observableThrow(e);
+                    return <Observable<ComparisonDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Comparison[]>><any>_observableThrow(response_);
+                return <Observable<ComparisonDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetComparisons(response: HttpResponseBase): Observable<Comparison[]> {
+    protected processGetComparisons(response: HttpResponseBase): Observable<ComparisonDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -368,7 +368,7 @@ export class WhittlerClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(Comparison.fromJS(item));
+                    result200!.push(ComparisonDto.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -377,272 +377,7 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Comparison[]>(<any>null);
-    }
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class WhittlersClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
-    }
-
-    getWhittlers(): Observable<Whittler[]> {
-        let url_ = this.baseUrl + "/whittlers";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetWhittlers(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetWhittlers(<any>response_);
-                } catch (e) {
-                    return <Observable<Whittler[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Whittler[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetWhittlers(response: HttpResponseBase): Observable<Whittler[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 400) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ErrorModel.fromJS(resultData400);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            }));
-        } else if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(Whittler.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<Whittler[]>(<any>null);
-    }
-
-    getWhittler(id: string | null): Observable<Whittler> {
-        let url_ = this.baseUrl + "/whittlers/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetWhittler(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetWhittler(<any>response_);
-                } catch (e) {
-                    return <Observable<Whittler>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Whittler>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetWhittler(response: HttpResponseBase): Observable<Whittler> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 400) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ErrorModel.fromJS(resultData400);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            }));
-        } else if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = Whittler.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<Whittler>(<any>null);
-    }
-
-    getWhittlerWhittles(id: string | null): Observable<Whittle[]> {
-        let url_ = this.baseUrl + "/whittlers/{id}/whittles";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetWhittlerWhittles(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetWhittlerWhittles(<any>response_);
-                } catch (e) {
-                    return <Observable<Whittle[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Whittle[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetWhittlerWhittles(response: HttpResponseBase): Observable<Whittle[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 400) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ErrorModel.fromJS(resultData400);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            }));
-        } else if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(Whittle.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<Whittle[]>(<any>null);
-    }
-
-    getWhittlerComparisons(id: string | null, maxNumMatches: number | undefined, percentage: number, max: string): Observable<Comparison[]> {
-        let url_ = this.baseUrl + "/whittlers/{id}/comparisons/{max}/{percentage}?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (percentage === undefined || percentage === null)
-            throw new Error("The parameter 'percentage' must be defined.");
-        url_ = url_.replace("{percentage}", encodeURIComponent("" + percentage));
-        if (max === undefined || max === null)
-            throw new Error("The parameter 'max' must be defined.");
-        url_ = url_.replace("{max}", encodeURIComponent("" + max));
-        if (maxNumMatches === null)
-            throw new Error("The parameter 'maxNumMatches' cannot be null.");
-        else if (maxNumMatches !== undefined)
-            url_ += "maxNumMatches=" + encodeURIComponent("" + maxNumMatches) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetWhittlerComparisons(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetWhittlerComparisons(<any>response_);
-                } catch (e) {
-                    return <Observable<Comparison[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Comparison[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetWhittlerComparisons(response: HttpResponseBase): Observable<Comparison[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 400) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ErrorModel.fromJS(resultData400);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            }));
-        } else if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(Comparison.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<Comparison[]>(<any>null);
+        return _observableOf<ComparisonDto[]>(<any>null);
     }
 }
 
@@ -694,7 +429,139 @@ export interface IErrorModel {
     details?: string[] | undefined;
 }
 
-export class Whittler implements IWhittler {
+export class ForkDto implements IForkDto {
+    id?: string | undefined;
+    leftBranch?: string | undefined;
+    rightBranch?: string | undefined;
+
+    constructor(data?: IForkDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.leftBranch = _data["leftBranch"];
+            this.rightBranch = _data["rightBranch"];
+        }
+    }
+
+    static fromJS(data: any): ForkDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ForkDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["leftBranch"] = this.leftBranch;
+        data["rightBranch"] = this.rightBranch;
+        return data; 
+    }
+}
+
+export interface IForkDto {
+    id?: string | undefined;
+    leftBranch?: string | undefined;
+    rightBranch?: string | undefined;
+}
+
+export class ForkModel implements IForkModel {
+    id?: string | undefined;
+    leftBranchLabel?: string | undefined;
+    rightBranchLabel?: string | undefined;
+
+    constructor(data?: IForkModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.leftBranchLabel = _data["leftBranchLabel"];
+            this.rightBranchLabel = _data["rightBranchLabel"];
+        }
+    }
+
+    static fromJS(data: any): ForkModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ForkModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["leftBranchLabel"] = this.leftBranchLabel;
+        data["rightBranchLabel"] = this.rightBranchLabel;
+        return data; 
+    }
+}
+
+export interface IForkModel {
+    id?: string | undefined;
+    leftBranchLabel?: string | undefined;
+    rightBranchLabel?: string | undefined;
+}
+
+export class TreeForkDto implements ITreeForkDto {
+    id?: string | undefined;
+    forkId?: string | undefined;
+    height!: number;
+
+    constructor(data?: ITreeForkDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.forkId = _data["forkId"];
+            this.height = _data["height"];
+        }
+    }
+
+    static fromJS(data: any): TreeForkDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TreeForkDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["forkId"] = this.forkId;
+        data["height"] = this.height;
+        return data; 
+    }
+}
+
+export interface ITreeForkDto {
+    id?: string | undefined;
+    forkId?: string | undefined;
+    height: number;
+}
+
+export class WhittlerDto implements IWhittlerDto {
     id?: string | undefined;
     numWhittles!: number;
     email?: string | undefined;
@@ -702,7 +569,7 @@ export class Whittler implements IWhittler {
     lastName?: string | undefined;
     sexualOrientation?: string | undefined;
 
-    constructor(data?: IWhittler) {
+    constructor(data?: IWhittlerDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -722,9 +589,9 @@ export class Whittler implements IWhittler {
         }
     }
 
-    static fromJS(data: any): Whittler {
+    static fromJS(data: any): WhittlerDto {
         data = typeof data === 'object' ? data : {};
-        let result = new Whittler();
+        let result = new WhittlerDto();
         result.init(data);
         return result;
     }
@@ -741,7 +608,7 @@ export class Whittler implements IWhittler {
     }
 }
 
-export interface IWhittler {
+export interface IWhittlerDto {
     id?: string | undefined;
     numWhittles: number;
     email?: string | undefined;
@@ -798,7 +665,7 @@ export interface IRegistrationModel {
     lastName?: string | undefined;
 }
 
-export class WhittlerProfile implements IWhittlerProfile {
+export class WhittlerProfileDto implements IWhittlerProfileDto {
     id?: string | undefined;
     numWhittles!: number;
     email?: string | undefined;
@@ -807,7 +674,7 @@ export class WhittlerProfile implements IWhittlerProfile {
     sexualOrientation?: string | undefined;
     isRegistered!: boolean;
 
-    constructor(data?: IWhittlerProfile) {
+    constructor(data?: IWhittlerProfileDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -828,9 +695,9 @@ export class WhittlerProfile implements IWhittlerProfile {
         }
     }
 
-    static fromJS(data: any): WhittlerProfile {
+    static fromJS(data: any): WhittlerProfileDto {
         data = typeof data === 'object' ? data : {};
-        let result = new WhittlerProfile();
+        let result = new WhittlerProfileDto();
         result.init(data);
         return result;
     }
@@ -848,7 +715,7 @@ export class WhittlerProfile implements IWhittlerProfile {
     }
 }
 
-export interface IWhittlerProfile {
+export interface IWhittlerProfileDto {
     id?: string | undefined;
     numWhittles: number;
     email?: string | undefined;
@@ -858,11 +725,11 @@ export interface IWhittlerProfile {
     isRegistered: boolean;
 }
 
-export class Whittle implements IWhittle {
+export class WhittleDto implements IWhittleDto {
     forkHeight!: number;
     branchedLeft!: boolean;
 
-    constructor(data?: IWhittle) {
+    constructor(data?: IWhittleDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -878,9 +745,9 @@ export class Whittle implements IWhittle {
         }
     }
 
-    static fromJS(data: any): Whittle {
+    static fromJS(data: any): WhittleDto {
         data = typeof data === 'object' ? data : {};
-        let result = new Whittle();
+        let result = new WhittleDto();
         result.init(data);
         return result;
     }
@@ -893,61 +760,17 @@ export class Whittle implements IWhittle {
     }
 }
 
-export interface IWhittle {
+export interface IWhittleDto {
     forkHeight: number;
     branchedLeft: boolean;
 }
 
-export class Fork implements IFork {
-    height!: number;
-    leftBranch?: string | undefined;
-    rightBranch?: string | undefined;
-
-    constructor(data?: IFork) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.height = _data["height"];
-            this.leftBranch = _data["leftBranch"];
-            this.rightBranch = _data["rightBranch"];
-        }
-    }
-
-    static fromJS(data: any): Fork {
-        data = typeof data === 'object' ? data : {};
-        let result = new Fork();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["height"] = this.height;
-        data["leftBranch"] = this.leftBranch;
-        data["rightBranch"] = this.rightBranch;
-        return data; 
-    }
-}
-
-export interface IFork {
-    height: number;
-    leftBranch?: string | undefined;
-    rightBranch?: string | undefined;
-}
-
-export class Comparison implements IComparison {
+export class ComparisonDto implements IComparisonDto {
     whittlerId?: string | undefined;
     whittlerFirstName?: string | undefined;
     similarity!: number;
 
-    constructor(data?: IComparison) {
+    constructor(data?: IComparisonDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -964,9 +787,9 @@ export class Comparison implements IComparison {
         }
     }
 
-    static fromJS(data: any): Comparison {
+    static fromJS(data: any): ComparisonDto {
         data = typeof data === 'object' ? data : {};
-        let result = new Comparison();
+        let result = new ComparisonDto();
         result.init(data);
         return result;
     }
@@ -980,7 +803,7 @@ export class Comparison implements IComparison {
     }
 }
 
-export interface IComparison {
+export interface IComparisonDto {
     whittlerId?: string | undefined;
     whittlerFirstName?: string | undefined;
     similarity: number;

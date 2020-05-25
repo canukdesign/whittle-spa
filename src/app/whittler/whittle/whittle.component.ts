@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WhittlerClient, Fork, Whittler, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { WhittlerClient, ForkDto, ComparisonDto } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-whittle',
@@ -9,8 +9,8 @@ import { WhittlerClient, Fork, Whittler, Comparison } from 'src/app/core/service
 })
 export class WhittleComponent implements OnInit {
 
-  public currentFork: Fork;
-  public matches: Comparison[];
+  public currentFork: ForkDto;
+  public matches: ComparisonDto[];
   public numMatches;
 
   constructor(

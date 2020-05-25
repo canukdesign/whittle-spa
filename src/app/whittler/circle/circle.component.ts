@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Comparison, WhittlerClient } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { WhittlerClient, ComparisonDto } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-circle',
@@ -9,7 +9,7 @@ import { Comparison, WhittlerClient } from 'src/app/core/services/whittle-api/wh
 })
 export class CircleComponent implements OnInit {
 
-  public matches: Comparison[];
+  public matches: ComparisonDto[];
   public numMatches;
 
   constructor(

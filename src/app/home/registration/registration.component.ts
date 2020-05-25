@@ -21,7 +21,9 @@ export class RegistrationComponent implements OnInit {
   initForm() {
     this.registrationForm = new FormGroup({
       firstName: new FormControl(),
-      lastName: new FormControl()
+      lastName: new FormControl(),
+      city: new FormControl(),
+      country: new FormControl()
     })
   }
 
