@@ -200,7 +200,7 @@ export class WhittlerClient {
         return _observableOf<WhittleDto[]>(<any>null);
     }
 
-    getCurrentFork(): Observable<TreeForkDto> {
+    getCurrentFork(): Observable<WhittleForkDto> {
         let url_ = this.baseUrl + "/forks/current";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -219,14 +219,14 @@ export class WhittlerClient {
                 try {
                     return this.processGetCurrentFork(<any>response_);
                 } catch (e) {
-                    return <Observable<TreeForkDto>><any>_observableThrow(e);
+                    return <Observable<WhittleForkDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TreeForkDto>><any>_observableThrow(response_);
+                return <Observable<WhittleForkDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetCurrentFork(response: HttpResponseBase): Observable<TreeForkDto> {
+    protected processGetCurrentFork(response: HttpResponseBase): Observable<WhittleForkDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -244,7 +244,7 @@ export class WhittlerClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TreeForkDto.fromJS(resultData200);
+            result200 = WhittleForkDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -252,10 +252,10 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TreeForkDto>(<any>null);
+        return _observableOf<WhittleForkDto>(<any>null);
     }
 
-    takeCurrentFork(left: boolean): Observable<TreeForkDto> {
+    takeCurrentFork(left: boolean): Observable<WhittleForkDto> {
         let url_ = this.baseUrl + "/forks/current/{left}";
         if (left === undefined || left === null)
             throw new Error("The parameter 'left' must be defined.");
@@ -277,14 +277,14 @@ export class WhittlerClient {
                 try {
                     return this.processTakeCurrentFork(<any>response_);
                 } catch (e) {
-                    return <Observable<TreeForkDto>><any>_observableThrow(e);
+                    return <Observable<WhittleForkDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TreeForkDto>><any>_observableThrow(response_);
+                return <Observable<WhittleForkDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processTakeCurrentFork(response: HttpResponseBase): Observable<TreeForkDto> {
+    protected processTakeCurrentFork(response: HttpResponseBase): Observable<WhittleForkDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -302,7 +302,7 @@ export class WhittlerClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TreeForkDto.fromJS(resultData200);
+            result200 = WhittleForkDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -310,7 +310,7 @@ export class WhittlerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TreeForkDto>(<any>null);
+        return _observableOf<WhittleForkDto>(<any>null);
     }
 
     getComparisons(max: number | undefined, percentage: number | undefined): Observable<ComparisonDto[]> {
@@ -763,6 +763,50 @@ export class WhittleDto implements IWhittleDto {
 export interface IWhittleDto {
     forkHeight: number;
     branchedLeft: boolean;
+}
+
+export class WhittleForkDto implements IWhittleForkDto {
+    height!: number;
+    leftBranch?: string | undefined;
+    rightBranch?: string | undefined;
+
+    constructor(data?: IWhittleForkDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.height = _data["height"];
+            this.leftBranch = _data["leftBranch"];
+            this.rightBranch = _data["rightBranch"];
+        }
+    }
+
+    static fromJS(data: any): WhittleForkDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new WhittleForkDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["height"] = this.height;
+        data["leftBranch"] = this.leftBranch;
+        data["rightBranch"] = this.rightBranch;
+        return data; 
+    }
+}
+
+export interface IWhittleForkDto {
+    height: number;
+    leftBranch?: string | undefined;
+    rightBranch?: string | undefined;
 }
 
 export class ComparisonDto implements IComparisonDto {

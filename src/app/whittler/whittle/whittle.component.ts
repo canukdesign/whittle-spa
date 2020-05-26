@@ -25,6 +25,7 @@ export class WhittleComponent implements OnInit {
         this.currentFork = forkResult;
       },
       error => {
+        this.currentFork = ForkDto.fromJS({"id": "0", "leftBranch": "ppp", "rightBranch": "ooo"});
       });
 
 

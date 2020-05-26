@@ -2,25 +2,19 @@
 <button (click)="atelier()">Circle</button>
 
 
-<div *ngIf="currentFork">{{currentFork.leftBranch}} </div>
-
 <mat-card (click)="forkLeft()">
-    foo
-    <div *ngIf="currentFork">{{currentFork.leftBranch}} </div>
+    {{currentFork.leftBranch}}
 </mat-card>
 
-<div *ngIf="currentFork">{{currentFork.rightBranch}} </div>
-
 <mat-card (click)="forkRight()">
-    bar
-    <div *ngIf="currentFork">{{currentFork.rightBranch}} </div>
+    {{currentFork.rightBranch}}
 </mat-card>
 
 Top Matching Whittlers ({{numMatches}})
 
 <ul>
     <li *ngFor="let match of matches">
-        {{match.whittlerId}} : {{match.similarity}}
+        {{match.whittlerFirstName}} : {{match.similarity}}
     </li>
 </ul>
 
