@@ -1,0 +1,12 @@
+<button (click)="whittle()">Whittle</button>
+<button (click)="profile()">Profile</button>
+
+<div>
+    Top Matching Whittlers ({{numMatches}})
+
+    <ul>
+        <li *ngFor="let match of matches">
+            {{match.whittlerId}} : {{match.similarity}}
+        </li>
+    </ul>
+</div>
