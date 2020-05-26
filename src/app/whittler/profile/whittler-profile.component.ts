@@ -45,12 +45,12 @@ export class WhittlerProfileComponent implements OnInit {
   }
 
   whittle() {
-    this.router.navigate(["whittler"]);
+    this.router.navigate(["whittler/whittle"]);
   }
 
 
   atelier() {
-    this.router.navigate(["circle"]);
+    this.router.navigate(["whittler/circle"]);
   }
 
 }

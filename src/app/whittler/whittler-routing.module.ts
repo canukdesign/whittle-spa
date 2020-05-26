@@ -9,7 +9,7 @@ import { CircleComponent } from './circle/circle.component';
 
 
 const clientsRoutes: Routes = [
-  { path: 'whittler', component: WhittleComponent, canActivate: [AuthGuard, RegistrationGuard] },
+  { path: 'whittler/whittle', component: WhittleComponent, canActivate: [AuthGuard, RegistrationGuard] },
   { path: 'whittler/profile', component: WhittlerProfileComponent, canActivate: [ AuthGuard, RegistrationGuard ]},
   { path: 'whittler/circle', component: CircleComponent, canActivate: [ AuthGuard, RegistrationGuard ]}    
 ]

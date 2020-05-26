@@ -33,6 +33,6 @@ export class CircleComponent implements OnInit {
   }
 
   whittle() {
-    this.router.navigate(["whittler/circle"]);
+    this.router.navigate(["whittler/whittle"]);
   }  
 }

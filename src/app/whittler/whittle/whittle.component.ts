@@ -23,21 +23,20 @@ export class WhittleComponent implements OnInit {
       forkResult =>
       {
         this.currentFork = forkResult;
-
-
-        this.whittleApi.getComparisons(3, 100).subscribe(
-          matchResult =>
-          {
-            this.matches = matchResult;
-            this.numMatches = this.matches.length;
-          },
-          error => {
-            this.matches = [];
-            this.numMatches = 0;
-          })
-
       },
       error => {
+      });
+
+
+    this.whittleApi.getComparisons(3, 100).subscribe(
+      matchResult =>
+      {
+        this.matches = matchResult;
+        this.numMatches = this.matches.length;
+      },
+      error => {
+        this.matches = [];
+        this.numMatches = 0;
       })
   }
 
