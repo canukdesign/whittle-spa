@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-
 import { WhittlerClient, WhittlerDto } from 'src/app/core/services/whittle-api/whittle-api.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-whittler-profile',
@@ -15,7 +13,6 @@ export class WhittlerProfileComponent implements OnInit {
   public whittlerProfileForm: FormGroup;
 
   constructor(
-      private router: Router,
       private whittleApi: WhittlerClient) { 
     this.initForm();
   }
@@ -27,6 +24,7 @@ export class WhittlerProfileComponent implements OnInit {
       Email: new FormControl()
     })
   }
+
   ngOnInit(): void {
     this.whittleApi.getProfile().subscribe(
       profileResult =>
@@ -35,7 +33,6 @@ export class WhittlerProfileComponent implements OnInit {
       },
       error => {
       })
-
   }
 
   onSubmit() {
@@ -43,14 +40,4 @@ export class WhittlerProfileComponent implements OnInit {
     console.warn(this.whittlerProfileForm.value);
 
   }
-
-  whittle() {
-    this.router.navigate(["whittler/whittle"]);
-  }
-
-
-  atelier() {
-    this.router.navigate(["whittler/circle"]);
-  }
-
 }

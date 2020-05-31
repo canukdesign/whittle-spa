@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { WhittlerClient, ForkDto, ComparisonDto } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
@@ -14,7 +13,6 @@ export class WhittleComponent implements OnInit {
   public numMatches;
 
   constructor(
-    private router: Router,
     private whittleApi: WhittlerClient) { 
   }
 
@@ -69,13 +67,5 @@ export class WhittleComponent implements OnInit {
       },
       error => {
       })
-  }
-
-  profile() {
-    this.router.navigate(["whittler/profile"]);
-  }
-
-  atelier() {
-    this.router.navigate(["whittler/circle"]);
   }
 }

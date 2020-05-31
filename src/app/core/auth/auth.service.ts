@@ -129,5 +129,4 @@ export class AuthService {
       concatMap((client: Auth0Client) => from(client.getTokenSilently(options)))
     );
   }
-
 }

@@ -1,0 +1,16 @@
+<header>
+    <button (click)="fork()" *ngIf="auth.isAdmin">Whittle</button>
+    <button (click)="whittle()" *ngIf="!auth.isAdmin">Whittle</button>
+    <button (click)="circle()" *ngIf="!auth.isAdmin">Circle</button>
+
+    <button (click)="profile()">Profile</button>
+
+    <pre *ngIf="auth.getUser$ | async as user">
+        <code>{{ user.name</code>
+    </pre>
+    
+    <button (click)="auth.login()" *ngIf="auth.loggedIn === false">Log In</button>
+    <button (click)="auth.logout()" *ngIf="auth.loggedIn === true">Log Out</button>
+</header>
+
+
