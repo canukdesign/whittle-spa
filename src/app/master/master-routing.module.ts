@@ -2,13 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../core/auth/auth.guard';
 
-import { RegistrationGuard } from '../core/auth/registration.guard';
 import { ForkComponent } from './fork/fork.component';
-import { AuthoGuard } from '../core/auth/autho.guard';
+import { ScopeGuard } from '../core/auth/scope.guard';
 
 
 const clientsRoutes: Routes = [
-  { path: 'master/fork', component: ForkComponent, canActivate: [AuthGuard, AuthoGuard] }  
+  { path: 'master/fork', component: ForkComponent, canActivate: [AuthGuard, ScopeGuard], data: {expectedScopes: ['superadmin']} }  
 ]
 
 @NgModule({

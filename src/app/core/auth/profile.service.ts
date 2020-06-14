@@ -17,7 +17,7 @@ export class ProfileService {
       this.localProfileSetup():
     }
 
-  isRegistered$ = this.whittlerClient.profile().pipe(
+  isRegistered$ = this.whittlerClient.getProfile().pipe(
     map(profile => this.registered = profile.isRegistered)
   );
 

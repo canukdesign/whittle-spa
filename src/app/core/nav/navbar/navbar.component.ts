@@ -16,6 +16,14 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  fork() {
+    this.router.navigate(["master/fork"]);
+  }
+
+  circle() {
+    this.router.navigate(["whittler/circle"]);
+  }
+
   profile() {
     this.router.navigate(["whittler/profile"]);
   }
