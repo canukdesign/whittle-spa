@@ -1,1 +1,17 @@
-<p>fork works!</p>
+<table mat-table [dataSource]="forksDataSource">
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id. </th>
+        <td mat-cell *matCellDef="let fork"> {{fork.id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="leftbranch">
+        <th mat-header-cell *matHeaderCellDef> Left </th>
+        <td mat-cell *matCellDef="let fork"> {{fork.leftBranch}} </td>
+    </ng-container>
+    <ng-container matColumnDef="rightbranch">
+        <th mat-header-cell *matHeaderCellDef> Right </th>
+        <td mat-cell *matCellDef="let fork"> {{fork.rightBranch}} </td>
+    </ng-container>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>      
+</table>
+
+<!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->

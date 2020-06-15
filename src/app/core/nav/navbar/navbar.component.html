@@ -1,10 +1,10 @@
 <header>
     <div *ngIf="auth.loggedIn === true">
         <button (click)="fork()" *ngIf="auth.isAdmin">Forks</button>
+        <button (click)="tree()" *ngIf="auth.isAdmin">Tree</button>
         <button (click)="whittle()" *ngIf="!auth.isAdmin">Whittle</button>
-        <button (click)="circle()" *ngIf="!auth.isAdmin">Circle</button>
-    
-        <button (click)="profile()">Profile</button>
+        <button (click)="circle()" *ngIf="!auth.isAdmin">Circle</button>   
+        <button (click)="profile()" *ngIf="!auth.isAdmin">Profile</button>
     
         <!-- <pre *ngIf="auth.getUser$() | async as user">
             <code>{{user.name}}</code>

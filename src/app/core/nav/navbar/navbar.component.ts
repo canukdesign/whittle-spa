@@ -20,6 +20,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(["master/fork"]);
   }
 
+  tree() {
+    this.router.navigate(["master/treefork"]);
+  }
+
   circle() {
     this.router.navigate(["whittler/circle"]);
   }

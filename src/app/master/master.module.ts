@@ -2,14 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ForkComponent } from './fork/fork.component';
 import { MasterRoutingModule } from './master-routing.module';
+import { SharedModule } from '../core/shared.module';
+import { TreeforkComponent } from './treefork/treefork.component';
 
 
 
 @NgModule({
-  declarations: [ForkComponent],
+  declarations: [ForkComponent, TreeforkComponent],
   imports: [
+    CommonModule,
     MasterRoutingModule,
-    CommonModule
+    SharedModule
   ]
 })
 export class MasterModule { }

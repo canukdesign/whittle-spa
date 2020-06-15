@@ -4,6 +4,7 @@ import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +38,10 @@ export class AuthService {
   userProfile$ = this.userProfileSubject$.asObservable();
   // Create a local property for login status
   loggedIn: boolean = null;
-  isAdmin: boolean = true;
+  isAdmin: boolean = false;
 
+  private helper = new JwtHelperService();
+  
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
@@ -127,7 +130,16 @@ export class AuthService {
 
   getTokenSilently$(options?): Observable<string> {
     return this.auth0Client$.pipe(
-      concatMap((client: Auth0Client) => from(client.getTokenSilently(options)))
+      concatMap((client: Auth0Client) => from(client.getTokenSilently(options))),
+      tap(token => {
+        let decodedToken = this.helper.decodeToken(token);
+        let userScopes: String[] = decodedToken.permissions;
+        if (userScopes.includes("superadmin")) {
+          this.isAdmin = true;
+        } else {
+          this.isAdmin = false;
+        }
+      })
     );
   }
 }
