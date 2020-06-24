@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WhittlerClient, ForkDto, ComparisonDto } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { WhittlerClient, ForkDto, ComparisonDto, WhittleForkDto } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-whittle',
@@ -8,7 +8,7 @@ import { WhittlerClient, ForkDto, ComparisonDto } from 'src/app/core/services/wh
 })
 export class WhittleComponent implements OnInit {
 
-  public currentFork: ForkDto;
+  public currentFork: WhittleForkDto;
   public matches: ComparisonDto[];
   public numMatches;
 
@@ -23,7 +23,7 @@ export class WhittleComponent implements OnInit {
         this.currentFork = forkResult;
       },
       error => {
-        this.currentFork = ForkDto.fromJS({"id": "0", "leftBranch": "ppp", "rightBranch": "ooo"});
+
       });
 
 

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ForkClient, ForkDto } from 'src/app/core/services/whittle-api/whittle-api.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { AddForkComponent } from './add-fork/add-fork.component';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-fork',
@@ -9,14 +12,16 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ForkComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'leftbranch', 'rightbranch'];
+  displayedColumns: string[] = ['id', 'leftbranch', 'rightbranch', 'intree'];
   forksDataSource: MatTableDataSource<ForkDto>;
+  selection = new SelectionModel<ForkDto>(false, []);
   
   constructor(
+    public dialog: MatDialog,
     private forkClient: ForkClient) { 
   }
 
-  ngOnInit(): void {
+  refresh() {
     this.forkClient.getForks().subscribe(
       result =>
       {
@@ -24,6 +29,30 @@ export class ForkComponent implements OnInit {
       },
       error => {
       })
+  }
+
+  ngOnInit(): void {
+    this.refresh();
+  }
+
+  newFork() {
+    let dialogRef = this.dialog.open(AddForkComponent, {
+      height: '400px',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(forkAdded => {if (forkAdded) {this.refresh()}});
+  }
+
+  editFork(row) {
+    let foo = row;
+    let dialogRef = this.dialog.open(AddForkComponent, {
+      height: '400px',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(forkAdded => {if (forkAdded) {this.refresh()}});
+
   }
 
 }

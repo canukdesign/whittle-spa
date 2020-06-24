@@ -1252,6 +1252,7 @@ export class ForkDto implements IForkDto {
     id?: string | undefined;
     leftBranch?: string | undefined;
     rightBranch?: string | undefined;
+    inTree!: boolean;
 
     constructor(data?: IForkDto) {
         if (data) {
@@ -1267,6 +1268,7 @@ export class ForkDto implements IForkDto {
             this.id = _data["id"];
             this.leftBranch = _data["leftBranch"];
             this.rightBranch = _data["rightBranch"];
+            this.inTree = _data["inTree"];
         }
     }
 
@@ -1282,6 +1284,7 @@ export class ForkDto implements IForkDto {
         data["id"] = this.id;
         data["leftBranch"] = this.leftBranch;
         data["rightBranch"] = this.rightBranch;
+        data["inTree"] = this.inTree;
         return data; 
     }
 }
@@ -1290,12 +1293,14 @@ export interface IForkDto {
     id?: string | undefined;
     leftBranch?: string | undefined;
     rightBranch?: string | undefined;
+    inTree: boolean;
 }
 
 export class ForkModel implements IForkModel {
     id?: string | undefined;
     leftBranchLabel?: string | undefined;
     rightBranchLabel?: string | undefined;
+    inTree!: boolean;
 
     constructor(data?: IForkModel) {
         if (data) {
@@ -1311,6 +1316,7 @@ export class ForkModel implements IForkModel {
             this.id = _data["id"];
             this.leftBranchLabel = _data["leftBranchLabel"];
             this.rightBranchLabel = _data["rightBranchLabel"];
+            this.inTree = _data["inTree"];
         }
     }
 
@@ -1326,6 +1332,7 @@ export class ForkModel implements IForkModel {
         data["id"] = this.id;
         data["leftBranchLabel"] = this.leftBranchLabel;
         data["rightBranchLabel"] = this.rightBranchLabel;
+        data["inTree"] = this.inTree;
         return data; 
     }
 }
@@ -1334,6 +1341,7 @@ export interface IForkModel {
     id?: string | undefined;
     leftBranchLabel?: string | undefined;
     rightBranchLabel?: string | undefined;
+    inTree: boolean;
 }
 
 export class TreeForkDto implements ITreeForkDto {

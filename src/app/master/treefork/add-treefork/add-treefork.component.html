@@ -1,0 +1,10 @@
+<form [formGroup]="addTreeForkForm">
+    <mat-form-field appearance="standard">
+      <mat-label>Fork</mat-label>
+      <mat-select formControlName="forkId" required>
+        <mat-option *ngFor="let fork of forks$ | async" value={{fork.id}}>{{fork.leftBranch}} - {{fork.rightBranch}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-button [disabled]="!addTreeForkForm.valid" (click)="add()">Add</button>
+  </form>
+  

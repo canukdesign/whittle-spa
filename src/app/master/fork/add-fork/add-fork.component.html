@@ -1,0 +1,12 @@
+<form [formGroup]="addForkForm">
+  <mat-form-field appearance="standard">
+    <mat-label>Left</mat-label>
+    <input matInput formControlName="leftBranchLabel" required>
+  </mat-form-field>
+  <mat-form-field appearance="standard">
+      <mat-label>Right</mat-label>
+      <input matInput formControlName="rightBranchLabel" required>
+  </mat-form-field>    
+  <button mat-button [disabled]="!addForkForm.valid" (click)="add()">Add</button>
+</form>
+
