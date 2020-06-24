@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddForkComponent } from './add-fork/add-fork.component';
 import { SelectionModel } from '@angular/cdk/collections';
+import { UpdateForkComponent } from './update-fork/update-fork.component';
 
 @Component({
   selector: 'app-fork',
@@ -45,8 +46,8 @@ export class ForkComponent implements OnInit {
   }
 
   editFork(row) {
-    let foo = row;
-    let dialogRef = this.dialog.open(AddForkComponent, {
+    let dialogRef = this.dialog.open(UpdateForkComponent, {
+      data: row,
       height: '400px',
       width: '600px',
     });

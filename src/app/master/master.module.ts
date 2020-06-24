@@ -6,11 +6,12 @@ import { SharedModule } from '../core/shared.module';
 import { TreeforkComponent } from './treefork/treefork.component';
 import { AddForkComponent } from './fork/add-fork/add-fork.component';
 import { AddTreeforkComponent } from './treefork/add-treefork/add-treefork.component';
+import { UpdateForkComponent } from './fork/update-fork/update-fork.component';
 
 
 
 @NgModule({
-  declarations: [ForkComponent, TreeforkComponent, AddForkComponent, AddTreeforkComponent],
+  declarations: [ForkComponent, TreeforkComponent, AddForkComponent, AddTreeforkComponent, UpdateForkComponent],
   imports: [
     CommonModule,
     MasterRoutingModule,
