@@ -1,11 +1,11 @@
 <form [formGroup]="whittlerProfileForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
         <mat-label>First Name</mat-label>
-        <input matInput placeholder="first name" type="text" formControlName="FirstName">
+        <input matInput placeholder="first name" type="text" formControlName="firstName">
     </mat-form-field>
     <mat-form-field>
         <mat-label>Last Name</mat-label>
-        <input matInput placeholder="last name" type="text" formControlName="LastName">
+        <input matInput placeholder="last name" type="text" formControlName="lastName">
     </mat-form-field>
     <button type="submit" [disabled]="!whittlerProfileForm.valid">Submit</button>
 </form>

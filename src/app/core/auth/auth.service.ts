@@ -38,7 +38,9 @@ export class AuthService {
   userProfile$ = this.userProfileSubject$.asObservable();
   // Create a local property for login status
   loggedIn: boolean = null;
+  
   isAdmin: boolean = false;
+  isRegistered: boolean = false;
 
   private helper = new JwtHelperService();
   

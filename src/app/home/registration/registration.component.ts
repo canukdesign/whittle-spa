@@ -28,8 +28,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initForm();
-    
   }
 
   onSubmit() {

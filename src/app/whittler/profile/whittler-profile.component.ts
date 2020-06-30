@@ -19,9 +19,9 @@ export class WhittlerProfileComponent implements OnInit {
 
   initForm() {
     this.whittlerProfileForm = new FormGroup({
-      FirstName: new FormControl(),
-      LastName: new FormControl(),
-      Email: new FormControl()
+      firstName: new FormControl(),
+      lastName: new FormControl(),
+      email: new FormControl()
     })
   }
 
@@ -30,13 +30,13 @@ export class WhittlerProfileComponent implements OnInit {
       profileResult =>
       {
         this.profile = profileResult;
+        this.whittlerProfileForm.patchValue(profileResult.toJSON());
       },
       error => {
       })
   }
 
   onSubmit() {
-    
     console.warn(this.whittlerProfileForm.value);
 
   }
