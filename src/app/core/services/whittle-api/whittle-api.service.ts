@@ -141,6 +141,65 @@ export class WhittlerClient {
         return _observableOf<WhittlerProfileDto>(<any>null);
     }
 
+    updateProfile(input: WhittlerProfileDto): Observable<WhittlerProfileDto> {
+        let url_ = this.baseUrl + "/profile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateProfile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateProfile(<any>response_);
+                } catch (e) {
+                    return <Observable<WhittlerProfileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<WhittlerProfileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateProfile(response: HttpResponseBase): Observable<WhittlerProfileDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = WhittlerProfileDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<WhittlerProfileDto>(<any>null);
+    }
+
     getWhittles(): Observable<WhittleDto[]> {
         let url_ = this.baseUrl + "/whittles";
         url_ = url_.replace(/[?&]$/, "");
@@ -453,11 +512,11 @@ export class ForkClient {
         return _observableOf<ForkDto[]>(<any>null);
     }
 
-    addFork(forkModel: ForkModel): Observable<ForkDto> {
+    addFork(input: ForkUpdateDto): Observable<ForkDto> {
         let url_ = this.baseUrl + "/forks";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(forkModel);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
@@ -484,6 +543,67 @@ export class ForkClient {
     }
 
     protected processAddFork(response: HttpResponseBase): Observable<ForkDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ForkDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ForkDto>(<any>null);
+    }
+
+    updateFork(id: string | null | undefined, input: ForkUpdateDto): Observable<ForkDto> {
+        let url_ = this.baseUrl + "/forks?";
+        if (id !== undefined && id !== null)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateFork(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateFork(<any>response_);
+                } catch (e) {
+                    return <Observable<ForkDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ForkDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateFork(response: HttpResponseBase): Observable<ForkDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -958,11 +1078,14 @@ export interface IErrorModel {
 
 export class WhittlerDto implements IWhittlerDto {
     id?: string | undefined;
-    numWhittles!: number;
+    city?: string | undefined;
+    country?: string | undefined;
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
+    numWhittles!: number;
     sexualOrientation?: string | undefined;
+    isRegistered!: boolean;
 
     constructor(data?: IWhittlerDto) {
         if (data) {
@@ -976,11 +1099,14 @@ export class WhittlerDto implements IWhittlerDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.numWhittles = _data["numWhittles"];
+            this.city = _data["city"];
+            this.country = _data["country"];
             this.email = _data["email"];
             this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
+            this.numWhittles = _data["numWhittles"];
             this.sexualOrientation = _data["sexualOrientation"];
+            this.isRegistered = _data["isRegistered"];
         }
     }
 
@@ -994,22 +1120,28 @@ export class WhittlerDto implements IWhittlerDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["numWhittles"] = this.numWhittles;
+        data["city"] = this.city;
+        data["country"] = this.country;
         data["email"] = this.email;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
+        data["numWhittles"] = this.numWhittles;
         data["sexualOrientation"] = this.sexualOrientation;
+        data["isRegistered"] = this.isRegistered;
         return data; 
     }
 }
 
 export interface IWhittlerDto {
     id?: string | undefined;
-    numWhittles: number;
+    city?: string | undefined;
+    country?: string | undefined;
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
+    numWhittles: number;
     sexualOrientation?: string | undefined;
+    isRegistered: boolean;
 }
 
 export class RegistrationModel implements IRegistrationModel {
@@ -1061,13 +1193,13 @@ export interface IRegistrationModel {
 }
 
 export class WhittlerProfileDto implements IWhittlerProfileDto {
-    id?: string | undefined;
-    numWhittles!: number;
-    email?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    sexualOrientation?: string | undefined;
-    isRegistered!: boolean;
+    city?: FSharpOptionOfString | undefined;
+    country?: FSharpOptionOfString | undefined;
+    email?: FSharpOptionOfString | undefined;
+    firstName?: FSharpOptionOfString | undefined;
+    isRegistered?: FSharpOptionOfBoolean | undefined;
+    lastName?: FSharpOptionOfString | undefined;
+    sexualOrientation?: FSharpOptionOfString | undefined;
 
     constructor(data?: IWhittlerProfileDto) {
         if (data) {
@@ -1080,13 +1212,13 @@ export class WhittlerProfileDto implements IWhittlerProfileDto {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
-            this.numWhittles = _data["numWhittles"];
-            this.email = _data["email"];
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.sexualOrientation = _data["sexualOrientation"];
-            this.isRegistered = _data["isRegistered"];
+            this.city = _data["city"] ? FSharpOptionOfString.fromJS(_data["city"]) : <any>undefined;
+            this.country = _data["country"] ? FSharpOptionOfString.fromJS(_data["country"]) : <any>undefined;
+            this.email = _data["email"] ? FSharpOptionOfString.fromJS(_data["email"]) : <any>undefined;
+            this.firstName = _data["firstName"] ? FSharpOptionOfString.fromJS(_data["firstName"]) : <any>undefined;
+            this.isRegistered = _data["isRegistered"] ? FSharpOptionOfBoolean.fromJS(_data["isRegistered"]) : <any>undefined;
+            this.lastName = _data["lastName"] ? FSharpOptionOfString.fromJS(_data["lastName"]) : <any>undefined;
+            this.sexualOrientation = _data["sexualOrientation"] ? FSharpOptionOfString.fromJS(_data["sexualOrientation"]) : <any>undefined;
         }
     }
 
@@ -1099,25 +1231,85 @@ export class WhittlerProfileDto implements IWhittlerProfileDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["numWhittles"] = this.numWhittles;
-        data["email"] = this.email;
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["sexualOrientation"] = this.sexualOrientation;
-        data["isRegistered"] = this.isRegistered;
+        data["city"] = this.city ? this.city.toJSON() : <any>undefined;
+        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["email"] = this.email ? this.email.toJSON() : <any>undefined;
+        data["firstName"] = this.firstName ? this.firstName.toJSON() : <any>undefined;
+        data["isRegistered"] = this.isRegistered ? this.isRegistered.toJSON() : <any>undefined;
+        data["lastName"] = this.lastName ? this.lastName.toJSON() : <any>undefined;
+        data["sexualOrientation"] = this.sexualOrientation ? this.sexualOrientation.toJSON() : <any>undefined;
         return data; 
     }
 }
 
 export interface IWhittlerProfileDto {
-    id?: string | undefined;
-    numWhittles: number;
-    email?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    sexualOrientation?: string | undefined;
-    isRegistered: boolean;
+    city?: FSharpOptionOfString | undefined;
+    country?: FSharpOptionOfString | undefined;
+    email?: FSharpOptionOfString | undefined;
+    firstName?: FSharpOptionOfString | undefined;
+    isRegistered?: FSharpOptionOfBoolean | undefined;
+    lastName?: FSharpOptionOfString | undefined;
+    sexualOrientation?: FSharpOptionOfString | undefined;
+}
+
+export class FSharpOptionOfString implements IFSharpOptionOfString {
+
+    constructor(data?: IFSharpOptionOfString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): FSharpOptionOfString {
+        data = typeof data === 'object' ? data : {};
+        let result = new FSharpOptionOfString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IFSharpOptionOfString {
+}
+
+export class FSharpOptionOfBoolean implements IFSharpOptionOfBoolean {
+
+    constructor(data?: IFSharpOptionOfBoolean) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): FSharpOptionOfBoolean {
+        data = typeof data === 'object' ? data : {};
+        let result = new FSharpOptionOfBoolean();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IFSharpOptionOfBoolean {
 }
 
 export class WhittleDto implements IWhittleDto {
@@ -1296,13 +1488,11 @@ export interface IForkDto {
     inTree: boolean;
 }
 
-export class ForkModel implements IForkModel {
-    id?: string | undefined;
-    leftBranchLabel?: string | undefined;
-    rightBranchLabel?: string | undefined;
-    inTree!: boolean;
+export class ForkUpdateDto implements IForkUpdateDto {
+    leftBranch?: string | undefined;
+    rightBranch?: string | undefined;
 
-    constructor(data?: IForkModel) {
+    constructor(data?: IForkUpdateDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1313,35 +1503,29 @@ export class ForkModel implements IForkModel {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
-            this.leftBranchLabel = _data["leftBranchLabel"];
-            this.rightBranchLabel = _data["rightBranchLabel"];
-            this.inTree = _data["inTree"];
+            this.leftBranch = _data["leftBranch"];
+            this.rightBranch = _data["rightBranch"];
         }
     }
 
-    static fromJS(data: any): ForkModel {
+    static fromJS(data: any): ForkUpdateDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ForkModel();
+        let result = new ForkUpdateDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["leftBranchLabel"] = this.leftBranchLabel;
-        data["rightBranchLabel"] = this.rightBranchLabel;
-        data["inTree"] = this.inTree;
+        data["leftBranch"] = this.leftBranch;
+        data["rightBranch"] = this.rightBranch;
         return data; 
     }
 }
 
-export interface IForkModel {
-    id?: string | undefined;
-    leftBranchLabel?: string | undefined;
-    rightBranchLabel?: string | undefined;
-    inTree: boolean;
+export interface IForkUpdateDto {
+    leftBranch?: string | undefined;
+    rightBranch?: string | undefined;
 }
 
 export class TreeForkDto implements ITreeForkDto {

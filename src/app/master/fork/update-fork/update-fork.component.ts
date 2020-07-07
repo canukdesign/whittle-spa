@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ForkClient, ForkModel, ForkDto } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { ForkClient, ForkDto, ForkUpdateDto } from 'src/app/core/services/whittle-api/whittle-api.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -37,7 +37,7 @@ export class UpdateForkComponent implements OnInit {
   }
 
   update() {
-    let model = new ForkModel();
+    let model = new ForkUpdateDto();
     model.init(this.updateForkForm.getRawValue());
 
     this.forkClient.addFork(model).subscribe(

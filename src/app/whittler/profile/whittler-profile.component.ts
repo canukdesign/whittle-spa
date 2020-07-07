@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { WhittlerClient, WhittlerDto } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { WhittlerClient, WhittlerDto, WhittlerProfileDto } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-whittler-profile',
@@ -9,7 +9,7 @@ import { WhittlerClient, WhittlerDto } from 'src/app/core/services/whittle-api/w
 })
 export class WhittlerProfileComponent implements OnInit {
 
-  public profile: WhittlerDto;
+  public profile: WhittlerProfileDto;
   public whittlerProfileForm: FormGroup;
 
   constructor(
