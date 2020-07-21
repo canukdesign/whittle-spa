@@ -1,1 +1,39 @@
-<p>update-duple works!</p>
+<form [formGroup]="updateDupleForm">
+
+    <div [formGroup]="choiceA">
+
+        <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="choiceA.name" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="choiceA.description" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>ImageId</mat-label>
+            <input matInput formControlName="choiceA.imageId" required>
+        </mat-form-field>
+    
+    </div>
+
+    <div [formGroup]="choiceB">
+
+        <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="choiceB.name" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="choiceB.description" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>ImageId</mat-label>
+            <input matInput formControlName="choiceB.imageId" required>
+        </mat-form-field>
+    
+    </div>
+
+    <button mat-button [disabled]="!updateDupleForm.valid || isUse" (click)="updateDuple()">Update</button>
+</form>
+

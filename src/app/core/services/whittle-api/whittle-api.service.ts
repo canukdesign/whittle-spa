@@ -453,7 +453,7 @@ export class DupleClient {
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
     }
 
-    getDubples(): Observable<Duple[]> {
+    getDuples(): Observable<Duple[]> {
         let url_ = this.baseUrl + "/duples";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -466,11 +466,11 @@ export class DupleClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetDubples(response_);
+            return this.processGetDuples(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetDubples(<any>response_);
+                    return this.processGetDuples(<any>response_);
                 } catch (e) {
                     return <Observable<Duple[]>><any>_observableThrow(e);
                 }
@@ -479,7 +479,7 @@ export class DupleClient {
         }));
     }
 
-    protected processGetDubples(response: HttpResponseBase): Observable<Duple[]> {
+    protected processGetDuples(response: HttpResponseBase): Observable<Duple[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -512,7 +512,7 @@ export class DupleClient {
         return _observableOf<Duple[]>(<any>null);
     }
 
-    addDuple(choices: Choice[]): Observable<Duple> {
+    addDuple(choices: DupleChoices): Observable<Duple> {
         let url_ = this.baseUrl + "/duples";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -543,6 +543,64 @@ export class DupleClient {
     }
 
     protected processAddDuple(response: HttpResponseBase): Observable<Duple> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Duple.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Duple>(<any>null);
+    }
+
+    getDuple(id: string | null): Observable<Duple> {
+        let url_ = this.baseUrl + "/duples/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDuple(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDuple(<any>response_);
+                } catch (e) {
+                    return <Observable<Duple>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Duple>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDuple(response: HttpResponseBase): Observable<Duple> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1549,6 +1607,46 @@ export interface IComparison {
     whittlerId?: string | undefined;
     whittlerFirstName?: string | undefined;
     similarity: number;
+}
+
+export class DupleChoices implements IDupleChoices {
+    choiceA?: Choice | undefined;
+    choiceB?: Choice | undefined;
+
+    constructor(data?: IDupleChoices) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.choiceA = _data["choiceA"] ? Choice.fromJS(_data["choiceA"]) : <any>undefined;
+            this.choiceB = _data["choiceB"] ? Choice.fromJS(_data["choiceB"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DupleChoices {
+        data = typeof data === 'object' ? data : {};
+        let result = new DupleChoices();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["choiceA"] = this.choiceA ? this.choiceA.toJSON() : <any>undefined;
+        data["choiceB"] = this.choiceB ? this.choiceB.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IDupleChoices {
+    choiceA?: Choice | undefined;
+    choiceB?: Choice | undefined;
 }
 
 export class ApiException extends Error {

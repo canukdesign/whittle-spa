@@ -24,7 +24,7 @@ export class ListDuplesComponent implements OnInit {
   }
 
   refresh() {
-    this.dupleClient.getDubples().subscribe(
+    this.dupleClient.getDuples().subscribe(
       result =>
       {
         this.duplesDataSource = new MatTableDataSource(result);

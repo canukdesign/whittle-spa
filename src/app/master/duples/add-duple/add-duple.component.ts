@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DupleClient, Duple } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { DupleClient, Duple, DupleChoices } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-add-duple',
@@ -38,8 +38,8 @@ export class AddDupleComponent implements OnInit {
   }
 
   
-  add() {
-    let model = new Duple();
+  addDuple() {
+    let model = new DupleChoices();
     model.init(this.addDupleForm.getRawValue());
 
     this.dupleClient.addDuple(model).subscribe(
