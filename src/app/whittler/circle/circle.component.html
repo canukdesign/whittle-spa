@@ -1,9 +1,9 @@
 <div>
-    Top Matching Whittlers ({{numMatches}})
+    Your Top ({{numComparisons}})
 
     <ul>
-        <li *ngFor="let match of matches">
-            {{match.whittlerId}} : {{match.similarity}}
+        <li *ngFor="let comparison of comparisons">
+            {{comparision.whittlerFirstName}} : {{comparison.similarity}}
         </li>
     </ul>
 </div>

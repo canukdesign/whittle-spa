@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WhittlerClient, ForkDto, ComparisonDto, WhittleForkDto } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { WhittlerClient, Question, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-whittle',
@@ -8,58 +8,56 @@ import { WhittlerClient, ForkDto, ComparisonDto, WhittleForkDto } from 'src/app/
 })
 export class WhittleComponent implements OnInit {
 
-  public currentFork: WhittleForkDto;
-  public matches: ComparisonDto[];
-  public numMatches;
+  public currentQuestion: Question;
+  public comparisons: Comparison[];
+  public numComparisons: number;
 
   constructor(
-    private whittleApi: WhittlerClient) { 
+    private whittlerClient: WhittlerClient) { 
   }
 
   ngOnInit(): void {
-    this.whittleApi.getCurrentFork().subscribe(
-      forkResult =>
+    this.whittlerClient.getCurrentQuestion().subscribe(
+      result =>
       {
-        this.currentFork = forkResult;
+        this.currentQuestion = result;
       },
       error => {
 
       });
 
 
-    this.whittleApi.getComparisons(3, 100).subscribe(
-      matchResult =>
+    this.whittlerClient.getComparisons(3, 100).subscribe(
+      result =>
       {
-        this.matches = matchResult;
-        this.numMatches = this.matches.length;
+        this.comparisons = result;
+        this.numComparisons = this.comparisons.length;
       },
       error => {
-        this.matches = [];
-        this.numMatches = 0;
+        this.comparisons = [];
+        this.numComparisons = 0;
       })
   }
 
-  forkLeft() {
-    console.log("went left");
-    this.fork(true);
+  chooseA() {
+    this.chose(true);
   }
 
-  forkRight() {
-    console.log("went right");
-    this.fork(false);
+  chooseB() {
+    this.chose(false);
   }
 
-  fork(left) {
-    this.whittleApi.takeCurrentFork(left).subscribe(
-      forkResult =>
+  chose(choseA:boolean) {
+    this.whittlerClient.answerCurrentQuestion(choseA).subscribe(
+      result =>
       {
-        this.currentFork = forkResult;
+        this.currentQuestion = result;
 
-        this.whittleApi.getComparisons(3, 100).subscribe(
-          matchResult =>
+        this.whittlerClient.getComparisons(3, 100).subscribe(
+          result =>
           {
-            this.matches = matchResult;
-            this.numMatches = this.matches.length;
+            this.comparisons = result;
+            this.numComparisons = this.comparisons.length;
           },
           error => {
           })

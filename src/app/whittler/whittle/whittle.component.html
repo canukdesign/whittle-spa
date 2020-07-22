@@ -1,16 +1,16 @@
-<mat-card (click)="forkLeft()">
-    {{currentFork.leftBranch}}
+<mat-card (click)="chooseA()">
+    {{currentQuestion.choiceA.name}}
 </mat-card>
 
-<mat-card (click)="forkRight()">
-    {{currentFork.rightBranch}}
+<mat-card (click)="chooseB()">
+    {{currentQuestion.choiceB.name}}
 </mat-card>
 
-Top Matching Whittlers ({{numMatches}})
+Top {{numComparisons}} Comparisons
 
 <ul>
-    <li *ngFor="let match of matches">
-        {{match.whittlerFirstName}} : {{match.similarity}}
+    <li *ngFor="let comparison of comparisons">
+        {{comparison.whittlerFirstName}} : {{comparison.similarity}}
     </li>
 </ul>
 
