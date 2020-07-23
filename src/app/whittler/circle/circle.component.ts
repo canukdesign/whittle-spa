@@ -20,7 +20,7 @@ export class CircleComponent implements OnInit {
       comparisonsResult =>
       {
         this.comparisons = comparisonsResult;
-        this.numComparisons = this.numComparisons.length;
+        this.numComparisons = this.comparisons.length;
       },
       error => {
       })

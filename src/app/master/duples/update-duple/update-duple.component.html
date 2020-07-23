@@ -1,6 +1,6 @@
 <form [formGroup]="updateDupleForm">
 
-    <div [formGroup]="choiceA">
+    <div formGroupName="choiceA">
 
         <mat-form-field appearance="standard">
             <mat-label>Name</mat-label>
@@ -17,7 +17,7 @@
     
     </div>
 
-    <div [formGroup]="choiceB">
+    <div formGroupName="choiceB">
 
         <mat-form-field appearance="standard">
             <mat-label>Name</mat-label>
@@ -34,6 +34,6 @@
     
     </div>
 
-    <button mat-button [disabled]="!updateDupleForm.valid || isUse" (click)="updateDuple()">Update</button>
+    <button mat-button [disabled]="!updateDupleForm.valid" (click)="updateDuple()">Update</button>
 </form>
 

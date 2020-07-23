@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WhittlerClient, Question, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
   selector: 'app-whittle',
@@ -13,6 +14,7 @@ export class WhittleComponent implements OnInit {
   public numComparisons: number;
 
   constructor(
+    public auth: AuthService,
     private whittlerClient: WhittlerClient) { 
   }
 

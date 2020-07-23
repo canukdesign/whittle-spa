@@ -21,7 +21,6 @@ export class WhittlerProfileComponent implements OnInit {
     this.profileForm = new FormGroup({
       city: new FormControl(),
       country: new FormControl(),
-      email: new FormControl(),
       firstName: new FormControl(),
       lastName: new FormControl(),
       sexualOrientation: new FormControl()

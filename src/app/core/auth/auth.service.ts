@@ -40,7 +40,6 @@ export class AuthService {
   loggedIn: boolean = null;
   
   isAdmin: boolean = false;
-  isRegistered: boolean = false;
 
   private helper = new JwtHelperService();
   

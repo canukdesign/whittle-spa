@@ -1,18 +1,21 @@
+<header>
+    <div *ngIf="auth.loggedIn === true">
+        <button (click)="auth.logout()">Log Out</button>
+    </div>
+    <div *ngIf="auth.loggedIn === false">      
+        <button (click)="auth.login()">Log In</button>
+    </div>
+
+</header>
+
 <mat-card (click)="chooseA()">
-    {{currentQuestion.choiceA.name}}
+    {{currentQuestion.duple.choiceA.name}}
 </mat-card>
 
 <mat-card (click)="chooseB()">
-    {{currentQuestion.choiceB.name}}
+    {{currentQuestion.duple.choiceB.name}}
 </mat-card>
 
-Top {{numComparisons}} Comparisons
-
-<ul>
-    <li *ngFor="let comparison of comparisons">
-        {{comparison.whittlerFirstName}} : {{comparison.similarity}}
-    </li>
-</ul>
-
+<app-circle></app-circle>
 
 

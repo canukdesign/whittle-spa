@@ -1,6 +1,6 @@
 <form [formGroup]="addDupleForm">
 
-    <div [formGroup]="choiceA">
+    <div formGroupName="choiceA">
 
         <mat-form-field appearance="standard">
             <mat-label>Name</mat-label>
@@ -17,7 +17,7 @@
     
     </div>
 
-    <div [formGroup]="choiceB">
+    <div formGroupName="choiceB">
 
         <mat-form-field appearance="standard">
             <mat-label>Name</mat-label>

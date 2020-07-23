@@ -34,7 +34,7 @@ export class AddQuestionComponent implements OnInit {
   }
 
   
-  addDuple() {
+  addQuestion() {
 
     let duple = this.addQuestionForm.get("dupleId").value;
 
