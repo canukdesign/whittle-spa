@@ -11,7 +11,7 @@ import { AddQuestionComponent } from '../add-question/add-question.component';
 })
 export class ListQuestionsComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'dupleid', 'height'];
+  displayedColumns: string[] = ['id', 'dupleid', 'order'];
   questionsDataSource: MatTableDataSource<Question>;
   
   constructor(

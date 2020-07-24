@@ -1,7 +1,7 @@
 <form [formGroup]="addQuestionForm">
     <mat-form-field appearance="standard">
       <mat-label>Question</mat-label>
-      <mat-select formControlName="forkId" required>
+      <mat-select formControlName="dupleId" required>
         <mat-option *ngFor="let duple of duples$ | async" value={{duple.id}}>{{duple.choiceA.name}} - {{duple.choiceB.name}}</mat-option>
       </mat-select>
     </mat-form-field>
