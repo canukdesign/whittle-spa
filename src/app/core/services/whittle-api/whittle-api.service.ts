@@ -1077,11 +1077,11 @@ export interface IErrorModel {
 }
 
 export class Profile implements IProfile {
-    city?: FSharpOptionOfString | undefined;
-    country?: FSharpOptionOfString | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
     email?: string | undefined;
-    firstName?: FSharpOptionOfString | undefined;
-    lastName?: FSharpOptionOfString | undefined;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
 
     constructor(data?: IProfile) {
         if (data) {
@@ -1094,11 +1094,11 @@ export class Profile implements IProfile {
 
     init(_data?: any) {
         if (_data) {
-            this.city = _data["city"] ? FSharpOptionOfString.fromJS(_data["city"]) : <any>undefined;
-            this.country = _data["country"] ? FSharpOptionOfString.fromJS(_data["country"]) : <any>undefined;
+            this.city = _data["city"];
+            this.country = _data["country"];
             this.email = _data["email"];
-            this.firstName = _data["firstName"] ? FSharpOptionOfString.fromJS(_data["firstName"]) : <any>undefined;
-            this.lastName = _data["lastName"] ? FSharpOptionOfString.fromJS(_data["lastName"]) : <any>undefined;
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
         }
     }
 
@@ -1111,51 +1111,21 @@ export class Profile implements IProfile {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["city"] = this.city ? this.city.toJSON() : <any>undefined;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["city"] = this.city;
+        data["country"] = this.country;
         data["email"] = this.email;
-        data["firstName"] = this.firstName ? this.firstName.toJSON() : <any>undefined;
-        data["lastName"] = this.lastName ? this.lastName.toJSON() : <any>undefined;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
         return data; 
     }
 }
 
 export interface IProfile {
-    city?: FSharpOptionOfString | undefined;
-    country?: FSharpOptionOfString | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
     email?: string | undefined;
-    firstName?: FSharpOptionOfString | undefined;
-    lastName?: FSharpOptionOfString | undefined;
-}
-
-export class FSharpOptionOfString implements IFSharpOptionOfString {
-
-    constructor(data?: IFSharpOptionOfString) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): FSharpOptionOfString {
-        data = typeof data === 'object' ? data : {};
-        let result = new FSharpOptionOfString();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
-}
-
-export interface IFSharpOptionOfString {
+    firstName?: string | undefined;
+    lastName?: string | undefined;
 }
 
 export class Answer implements IAnswer {
@@ -1336,7 +1306,7 @@ export interface IChoice {
 
 export class Comparison implements IComparison {
     whittlerId?: string | undefined;
-    whittlerFirstName?: FSharpOptionOfString | undefined;
+    whittlerFirstName?: string | undefined;
     similarity!: number;
 
     constructor(data?: IComparison) {
@@ -1351,7 +1321,7 @@ export class Comparison implements IComparison {
     init(_data?: any) {
         if (_data) {
             this.whittlerId = _data["whittlerId"];
-            this.whittlerFirstName = _data["whittlerFirstName"] ? FSharpOptionOfString.fromJS(_data["whittlerFirstName"]) : <any>undefined;
+            this.whittlerFirstName = _data["whittlerFirstName"];
             this.similarity = _data["similarity"];
         }
     }
@@ -1366,7 +1336,7 @@ export class Comparison implements IComparison {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["whittlerId"] = this.whittlerId;
-        data["whittlerFirstName"] = this.whittlerFirstName ? this.whittlerFirstName.toJSON() : <any>undefined;
+        data["whittlerFirstName"] = this.whittlerFirstName;
         data["similarity"] = this.similarity;
         return data; 
     }
@@ -1374,7 +1344,7 @@ export class Comparison implements IComparison {
 
 export interface IComparison {
     whittlerId?: string | undefined;
-    whittlerFirstName?: FSharpOptionOfString | undefined;
+    whittlerFirstName?: string | undefined;
     similarity: number;
 }
 
@@ -1420,11 +1390,11 @@ export interface IDupleChoices {
 
 export class Whittler implements IWhittler {
     id?: string | undefined;
-    city?: FSharpOptionOfString | undefined;
-    country?: FSharpOptionOfString | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
     email?: string | undefined;
-    firstName?: FSharpOptionOfString | undefined;
-    lastName?: FSharpOptionOfString | undefined;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
     memberSince!: Date;
     orderOfNextQuestion!: number;
     answers?: BitVector | undefined;
@@ -1441,11 +1411,11 @@ export class Whittler implements IWhittler {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.city = _data["city"] ? FSharpOptionOfString.fromJS(_data["city"]) : <any>undefined;
-            this.country = _data["country"] ? FSharpOptionOfString.fromJS(_data["country"]) : <any>undefined;
+            this.city = _data["city"];
+            this.country = _data["country"];
             this.email = _data["email"];
-            this.firstName = _data["firstName"] ? FSharpOptionOfString.fromJS(_data["firstName"]) : <any>undefined;
-            this.lastName = _data["lastName"] ? FSharpOptionOfString.fromJS(_data["lastName"]) : <any>undefined;
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
             this.memberSince = _data["memberSince"] ? new Date(_data["memberSince"].toString()) : <any>undefined;
             this.orderOfNextQuestion = _data["orderOfNextQuestion"];
             this.answers = _data["answers"] ? BitVector.fromJS(_data["answers"]) : <any>undefined;
@@ -1462,11 +1432,11 @@ export class Whittler implements IWhittler {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["city"] = this.city ? this.city.toJSON() : <any>undefined;
-        data["country"] = this.country ? this.country.toJSON() : <any>undefined;
+        data["city"] = this.city;
+        data["country"] = this.country;
         data["email"] = this.email;
-        data["firstName"] = this.firstName ? this.firstName.toJSON() : <any>undefined;
-        data["lastName"] = this.lastName ? this.lastName.toJSON() : <any>undefined;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
         data["memberSince"] = this.memberSince ? this.memberSince.toISOString() : <any>undefined;
         data["orderOfNextQuestion"] = this.orderOfNextQuestion;
         data["answers"] = this.answers ? this.answers.toJSON() : <any>undefined;
@@ -1476,11 +1446,11 @@ export class Whittler implements IWhittler {
 
 export interface IWhittler {
     id?: string | undefined;
-    city?: FSharpOptionOfString | undefined;
-    country?: FSharpOptionOfString | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
     email?: string | undefined;
-    firstName?: FSharpOptionOfString | undefined;
-    lastName?: FSharpOptionOfString | undefined;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
     memberSince: Date;
     orderOfNextQuestion: number;
     answers?: BitVector | undefined;

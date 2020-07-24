@@ -25,4 +25,16 @@ export class CircleComponent implements OnInit {
       error => {
       })
   }
+
+  refresh() {
+    this.whittlerClient.getComparisons(3, 100).subscribe(
+      comparisonsResult =>
+      {
+        this.comparisons = comparisonsResult;
+        this.numComparisons = this.comparisons.length;
+      },
+      error => {
+      })
+
+  }
 }

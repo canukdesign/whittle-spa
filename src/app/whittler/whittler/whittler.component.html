@@ -1,0 +1,13 @@
+<header>
+    <div *ngIf="auth.loggedIn === true">
+        <button (click)="auth.logout()">Log Out</button>
+    </div>
+    <div *ngIf="auth.loggedIn === false">      
+        <button (click)="auth.login()">Log In</button>
+    </div>
+
+</header>
+
+<app-whittle (whittled)=onWhittle($event)></app-whittle>
+<app-circle></app-circle>
+

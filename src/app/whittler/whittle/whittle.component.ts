@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { WhittlerClient, Question, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 
@@ -9,9 +9,9 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 })
 export class WhittleComponent implements OnInit {
 
+  @Output() whittled = new EventEmitter<boolean>();
+  
   public currentQuestion: Question;
-  public comparisons: Comparison[];
-  public numComparisons: number;
 
   constructor(
     public auth: AuthService,
@@ -27,18 +27,6 @@ export class WhittleComponent implements OnInit {
       error => {
 
       });
-
-
-    this.whittlerClient.getComparisons(3, 100).subscribe(
-      result =>
-      {
-        this.comparisons = result;
-        this.numComparisons = this.comparisons.length;
-      },
-      error => {
-        this.comparisons = [];
-        this.numComparisons = 0;
-      })
   }
 
   chooseA() {
@@ -54,18 +42,9 @@ export class WhittleComponent implements OnInit {
       result =>
       {
         this.currentQuestion = result;
-
-        this.whittlerClient.getComparisons(3, 100).subscribe(
-          result =>
-          {
-            this.comparisons = result;
-            this.numComparisons = this.comparisons.length;
-          },
-          error => {
-          })
-
+        this.whittled.emit(choseA);
       },
       error => {
-      })
+      })    
   }
 }
