@@ -12,6 +12,7 @@ export class WhittleComponent implements OnInit {
   @Output() whittled = new EventEmitter<boolean>();
   
   public currentQuestion: Question;
+  public outOfQuestions: boolean = false;
 
   constructor(
     public auth: AuthService,
@@ -25,7 +26,7 @@ export class WhittleComponent implements OnInit {
         this.currentQuestion = result;
       },
       error => {
-
+        this.outOfQuestions = true;
       });
   }
 
@@ -45,6 +46,7 @@ export class WhittleComponent implements OnInit {
         this.whittled.emit(choseA);
       },
       error => {
+        this.outOfQuestions = true;        
       })    
   }
 }
