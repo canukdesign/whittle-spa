@@ -1,22 +1,14 @@
-<button (click)="profile()">Profile</button>
-<button (click)="atelier()">Circle</button>
 
+<div *ngIf="!outOfQuestions">
+    <mat-card (click)="chooseA()">
+        {{currentQuestion.duple.choiceA.name}}
+    </mat-card>
+    
+    <mat-card (click)="chooseB()">
+        {{currentQuestion.duple.choiceB.name}}
+    </mat-card>
+</div>
 
-<mat-card (click)="forkLeft()">
-    {{currentFork.leftBranch}}
-</mat-card>
-
-<mat-card (click)="forkRight()">
-    {{currentFork.rightBranch}}
-</mat-card>
-
-Top Matching Whittlers ({{numMatches}})
-
-<ul>
-    <li *ngFor="let match of matches">
-        {{match.whittlerFirstName}} : {{match.similarity}}
-    </li>
-</ul>
-
-
-
+<div *ngIf="outOfQuestions">
+    Out of questions
+</div>

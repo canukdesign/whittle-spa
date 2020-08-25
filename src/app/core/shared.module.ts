@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from './ui/material.module';
 import { WidgetsModule } from './ui/widgets.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NavbarComponent } from './nav/navbar/navbar.component';
 
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     HttpClientModule,

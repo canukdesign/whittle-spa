@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { WhittlerClient, ForkDto, ComparisonDto } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { WhittlerClient, Question, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
   selector: 'app-whittle',
@@ -9,73 +9,44 @@ import { WhittlerClient, ForkDto, ComparisonDto } from 'src/app/core/services/wh
 })
 export class WhittleComponent implements OnInit {
 
-  public currentFork: ForkDto;
-  public matches: ComparisonDto[];
-  public numMatches;
+  @Output() whittled = new EventEmitter<boolean>();
+  
+  public currentQuestion: Question;
+  public outOfQuestions: boolean = false;
 
   constructor(
-    private router: Router,
-    private whittleApi: WhittlerClient) { 
+    public auth: AuthService,
+    private whittlerClient: WhittlerClient) { 
   }
 
   ngOnInit(): void {
-    this.whittleApi.getCurrentFork().subscribe(
-      forkResult =>
+    this.whittlerClient.getCurrentQuestion().subscribe(
+      result =>
       {
-        this.currentFork = forkResult;
+        this.currentQuestion = result;
       },
       error => {
-        this.currentFork = ForkDto.fromJS({"id": "0", "leftBranch": "ppp", "rightBranch": "ooo"});
+        this.outOfQuestions = true;
       });
+  }
 
+  chooseA() {
+    this.chose(true);
+  }
 
-    this.whittleApi.getComparisons(3, 100).subscribe(
-      matchResult =>
+  chooseB() {
+    this.chose(false);
+  }
+
+  chose(choseA:boolean) {
+    this.whittlerClient.answerCurrentQuestion(choseA).subscribe(
+      result =>
       {
-        this.matches = matchResult;
-        this.numMatches = this.matches.length;
+        this.currentQuestion = result;
+        this.whittled.emit(choseA);
       },
       error => {
-        this.matches = [];
-        this.numMatches = 0;
-      })
-  }
-
-  forkLeft() {
-    console.log("went left");
-    this.fork(true);
-  }
-
-  forkRight() {
-    console.log("went right");
-    this.fork(false);
-  }
-
-  fork(left) {
-    this.whittleApi.takeCurrentFork(left).subscribe(
-      forkResult =>
-      {
-        this.currentFork = forkResult;
-
-        this.whittleApi.getComparisons(3, 100).subscribe(
-          matchResult =>
-          {
-            this.matches = matchResult;
-            this.numMatches = this.matches.length;
-          },
-          error => {
-          })
-
-      },
-      error => {
-      })
-  }
-
-  profile() {
-    this.router.navigate(["whittler/profile"]);
-  }
-
-  atelier() {
-    this.router.navigate(["whittler/circle"]);
+        this.outOfQuestions = true;        
+      })    
   }
 }

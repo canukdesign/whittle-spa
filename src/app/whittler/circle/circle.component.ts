@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { WhittlerClient, ComparisonDto } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { WhittlerClient, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-circle',
@@ -9,30 +8,33 @@ import { WhittlerClient, ComparisonDto } from 'src/app/core/services/whittle-api
 })
 export class CircleComponent implements OnInit {
 
-  public matches: ComparisonDto[];
-  public numMatches;
+  public comparisons: Comparison[];
+  public numComparisons;
 
   constructor(
-    private router: Router,
-    private whittleApi: WhittlerClient) { 
+    private whittlerClient: WhittlerClient) { 
   }
 
   ngOnInit(): void {
-    this.whittleApi.getComparisons(3, 100).subscribe(
-      matchResult =>
+    this.whittlerClient.getComparisons(3, 100).subscribe(
+      comparisonsResult =>
       {
-        this.matches = matchResult;
-        this.numMatches = this.matches.length;
+        this.comparisons = comparisonsResult;
+        this.numComparisons = this.comparisons.length;
       },
       error => {
       })
   }
 
-  profile() {
-    this.router.navigate(["whittler/profile"]);
-  }
+  refresh() {
+    this.whittlerClient.getComparisons(3, 100).subscribe(
+      comparisonsResult =>
+      {
+        this.comparisons = comparisonsResult;
+        this.numComparisons = this.comparisons.length;
+      },
+      error => {
+      })
 
-  whittle() {
-    this.router.navigate(["whittler/whittle"]);
-  }  
+  }
 }

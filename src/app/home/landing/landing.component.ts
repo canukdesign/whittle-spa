@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 })
 export class LandingComponent implements OnInit {
 
-  constructor() { }
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
   }

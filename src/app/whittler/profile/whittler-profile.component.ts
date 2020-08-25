@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-
-import { WhittlerClient, WhittlerDto } from 'src/app/core/services/whittle-api/whittle-api.service';
-import { Router } from '@angular/router';
+import { WhittlerClient, Profile } from 'src/app/core/services/whittle-api/whittle-api.service';
 
 @Component({
   selector: 'app-whittler-profile',
@@ -11,46 +9,37 @@ import { Router } from '@angular/router';
 })
 export class WhittlerProfileComponent implements OnInit {
 
-  public profile: WhittlerDto;
-  public whittlerProfileForm: FormGroup;
+  public profile: Profile;
+  public profileForm: FormGroup;
 
   constructor(
-      private router: Router,
-      private whittleApi: WhittlerClient) { 
+      private whittlerClient: WhittlerClient) { 
     this.initForm();
   }
 
   initForm() {
-    this.whittlerProfileForm = new FormGroup({
-      FirstName: new FormControl(),
-      LastName: new FormControl(),
-      Email: new FormControl()
+    this.profileForm = new FormGroup({
+      city: new FormControl(),
+      country: new FormControl(),
+      firstName: new FormControl(),
+      lastName: new FormControl(),
+      sexualOrientation: new FormControl()
     })
   }
+
   ngOnInit(): void {
-    this.whittleApi.getProfile().subscribe(
+    this.whittlerClient.getProfile().subscribe(
       profileResult =>
       {
         this.profile = profileResult;
+        this.profileForm.patchValue(profileResult.toJSON());
       },
       error => {
       })
-
   }
 
   onSubmit() {
-    
-    console.warn(this.whittlerProfileForm.value);
+    console.warn(this.profileForm.value);
 
   }
-
-  whittle() {
-    this.router.navigate(["whittler/whittle"]);
-  }
-
-
-  atelier() {
-    this.router.navigate(["whittler/circle"]);
-  }
-
 }

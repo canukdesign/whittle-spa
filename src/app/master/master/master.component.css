@@ -1,0 +1,9 @@
+#duplelist {
+    height: 50%;
+    overflow: scroll;
+}
+
+#questionlist {
+    height: 50%;
+    overflow: scroll;
+}

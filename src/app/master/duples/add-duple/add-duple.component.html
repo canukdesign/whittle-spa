@@ -1,0 +1,40 @@
+<form [formGroup]="addDupleForm">
+
+    Choice A
+    <div formGroupName="choiceA">
+
+        <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>ImageId</mat-label>
+            <input matInput formControlName="imageId" required>
+        </mat-form-field>
+    
+    </div>
+
+    Choice B
+    <div formGroupName="choiceB">
+
+        <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" required>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+            <mat-label>ImageId</mat-label>
+            <input matInput formControlName="imageId" required>
+        </mat-form-field>
+    
+    </div>
+
+    <button mat-button [disabled]="!addDupleForm.valid" (click)="addDuple()">Add</button>
+</form>

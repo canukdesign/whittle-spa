@@ -1,0 +1,49 @@
+
+<button (click)="newDuple()">New</button>
+
+<table mat-table [dataSource]="duplesDataSource">
+
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id. </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="choiceAName">
+        <th mat-header-cell *matHeaderCellDef> Choice A Name </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.choiceA.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="choiceADescription">
+        <th mat-header-cell *matHeaderCellDef> Choice A Description </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.choiceA.description}} </td>
+    </ng-container>
+    <ng-container matColumnDef="choiceAImageId">
+        <th mat-header-cell *matHeaderCellDef> Choice A Image ID </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.choiceA.imageId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="choiceBName">
+        <th mat-header-cell *matHeaderCellDef> Choice B Name </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.choiceB.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="choiceBDescription">
+        <th mat-header-cell *matHeaderCellDef> Choice B Description </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.choiceB.description}} </td>
+    </ng-container>
+    <ng-container matColumnDef="choiceBImageId">
+        <th mat-header-cell *matHeaderCellDef> Choice B Image ID </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.choiceB.imageId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inUse">
+        <th mat-header-cell *matHeaderCellDef> In Use </th>
+        <td mat-cell *matCellDef="let duple"> {{duple.inUse}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        (dblclick)="editDuple(row)" 
+        [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+        (mouseover)="row.hovered = true" (mouseout)="row.hovered = false"></tr>      
+</table>
+
+<!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->

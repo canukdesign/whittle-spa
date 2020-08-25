@@ -1,0 +1,21 @@
+<header>
+    <div *ngIf="auth.loggedIn === true">
+        <button (click)="fork()" *ngIf="auth.isAdmin">Forks</button>
+        <button (click)="tree()" *ngIf="auth.isAdmin">Tree</button>
+        <button (click)="whittle()" *ngIf="!auth.isAdmin">Whittle</button>
+        <button (click)="circle()" *ngIf="!auth.isAdmin">Circle</button>   
+        <button (click)="profile()" *ngIf="!auth.isAdmin">Profile</button>
+    
+        <!-- <pre *ngIf="auth.getUser$() | async as user">
+            <code>{{user.name}}</code>
+        </pre> -->
+
+        <button (click)="auth.logout()">Log Out</button>
+    </div>
+    <div *ngIf="auth.loggedIn === false">      
+        <button (click)="auth.login()">Log In</button>
+    </div>
+
+</header>
+
+

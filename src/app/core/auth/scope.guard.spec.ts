@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RegistrationGuard } from './registration.guard';
+import { ScopeGuard } from './scope.guard';
 
-describe('RegistrationGuard', () => {
-  let guard: RegistrationGuard;
+describe('ScopeGuard', () => {
+  let guard: ScopeGuard;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    guard = TestBed.inject(RegistrationGuard);
+    guard = TestBed.inject(ScopeGuard);
   });
 
   it('should be created', () => {
