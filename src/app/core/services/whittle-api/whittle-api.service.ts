@@ -17,6 +17,134 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 @Injectable({
     providedIn: 'root'
 })
+export class MembershipClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
+    }
+
+    register(regModel: RegistrationModel): Observable<Whittler> {
+        let url_ = this.baseUrl + "/whittlers/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(regModel);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegister(<any>response_);
+                } catch (e) {
+                    return <Observable<Whittler>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Whittler>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRegister(response: HttpResponseBase): Observable<Whittler> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Whittler.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Whittler>(<any>null);
+    }
+
+    registerSelf(): Observable<Whittler> {
+        let url_ = this.baseUrl + "/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterSelf(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterSelf(<any>response_);
+                } catch (e) {
+                    return <Observable<Whittler>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Whittler>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRegisterSelf(response: HttpResponseBase): Observable<Whittler> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Whittler.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Whittler>(<any>null);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
 export class WhittlerClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -1084,6 +1212,158 @@ export interface IErrorModel {
     details?: string[] | undefined;
 }
 
+export class Whittler implements IWhittler {
+    id?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    email?: string | undefined;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    memberSince!: Date;
+    orderOfNextQuestion!: number;
+    answers?: BitVector | undefined;
+
+    constructor(data?: IWhittler) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.city = _data["city"];
+            this.country = _data["country"];
+            this.email = _data["email"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.memberSince = _data["memberSince"] ? new Date(_data["memberSince"].toString()) : <any>undefined;
+            this.orderOfNextQuestion = _data["orderOfNextQuestion"];
+            this.answers = _data["answers"] ? BitVector.fromJS(_data["answers"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Whittler {
+        data = typeof data === 'object' ? data : {};
+        let result = new Whittler();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["city"] = this.city;
+        data["country"] = this.country;
+        data["email"] = this.email;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["memberSince"] = this.memberSince ? this.memberSince.toISOString() : <any>undefined;
+        data["orderOfNextQuestion"] = this.orderOfNextQuestion;
+        data["answers"] = this.answers ? this.answers.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IWhittler {
+    id?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    email?: string | undefined;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    memberSince: Date;
+    orderOfNextQuestion: number;
+    answers?: BitVector | undefined;
+}
+
+export class BitVector implements IBitVector {
+    data?: number[] | undefined;
+    size!: number;
+
+    constructor(data?: IBitVector) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(item);
+            }
+            this.size = _data["size"];
+        }
+    }
+
+    static fromJS(data: any): BitVector {
+        data = typeof data === 'object' ? data : {};
+        let result = new BitVector();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item);
+        }
+        data["size"] = this.size;
+        return data; 
+    }
+}
+
+export interface IBitVector {
+    data?: number[] | undefined;
+    size: number;
+}
+
+export class RegistrationModel implements IRegistrationModel {
+    email?: string | undefined;
+
+    constructor(data?: IRegistrationModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+        }
+    }
+
+    static fromJS(data: any): RegistrationModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegistrationModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        return data; 
+    }
+}
+
+export interface IRegistrationModel {
+    email?: string | undefined;
+}
+
 export class Profile implements IProfile {
     city?: string | undefined;
     country?: string | undefined;
@@ -1394,122 +1674,6 @@ export class DupleChoices implements IDupleChoices {
 export interface IDupleChoices {
     choiceA?: Choice | undefined;
     choiceB?: Choice | undefined;
-}
-
-export class Whittler implements IWhittler {
-    id?: string | undefined;
-    city?: string | undefined;
-    country?: string | undefined;
-    email?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    memberSince!: Date;
-    orderOfNextQuestion!: number;
-    answers?: BitVector | undefined;
-
-    constructor(data?: IWhittler) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.city = _data["city"];
-            this.country = _data["country"];
-            this.email = _data["email"];
-            this.firstName = _data["firstName"];
-            this.lastName = _data["lastName"];
-            this.memberSince = _data["memberSince"] ? new Date(_data["memberSince"].toString()) : <any>undefined;
-            this.orderOfNextQuestion = _data["orderOfNextQuestion"];
-            this.answers = _data["answers"] ? BitVector.fromJS(_data["answers"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): Whittler {
-        data = typeof data === 'object' ? data : {};
-        let result = new Whittler();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["city"] = this.city;
-        data["country"] = this.country;
-        data["email"] = this.email;
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
-        data["memberSince"] = this.memberSince ? this.memberSince.toISOString() : <any>undefined;
-        data["orderOfNextQuestion"] = this.orderOfNextQuestion;
-        data["answers"] = this.answers ? this.answers.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IWhittler {
-    id?: string | undefined;
-    city?: string | undefined;
-    country?: string | undefined;
-    email?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    memberSince: Date;
-    orderOfNextQuestion: number;
-    answers?: BitVector | undefined;
-}
-
-export class BitVector implements IBitVector {
-    data?: number[] | undefined;
-    size!: number;
-
-    constructor(data?: IBitVector) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data!.push(item);
-            }
-            this.size = _data["size"];
-        }
-    }
-
-    static fromJS(data: any): BitVector {
-        data = typeof data === 'object' ? data : {};
-        let result = new BitVector();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item);
-        }
-        data["size"] = this.size;
-        return data; 
-    }
-}
-
-export interface IBitVector {
-    data?: number[] | undefined;
-    size: number;
 }
 
 export class ApiException extends Error {
