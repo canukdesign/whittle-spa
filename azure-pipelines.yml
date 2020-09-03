@@ -22,6 +22,7 @@ steps:
     ng build --prod
   displayName: 'npm install and build'
 
+- task: PublishBuildArtifacts@1
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Pay-As-You-Go Dev/Test(42f4115a-76fd-4703-aa78-bdaa7b450689)'
