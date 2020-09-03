@@ -34,5 +34,6 @@ steps:
     appName: 'whittle-spa'
     package: '$(Build.ArtifactStagingDirectory)/*.zip'
     deploymentMethod: 'auto'
+    customWebConfig: '-Handler iisnode -NodeStartFile server.js -appType node'
 
 
