@@ -23,6 +23,11 @@ steps:
   displayName: 'npm install and build'
 
 - task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+    
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Pay-As-You-Go Dev/Test(42f4115a-76fd-4703-aa78-bdaa7b450689)'
@@ -30,3 +35,5 @@ steps:
     appName: 'whittle-spa'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
+
+
