@@ -24,7 +24,7 @@ export class MembershipClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
+        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
     }
 
     register(regModel: RegistrationModel): Observable<Whittler> {
@@ -152,7 +152,7 @@ export class WhittlerClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
+        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
     }
 
     getProfile(): Observable<Profile> {
@@ -527,7 +527,7 @@ export class DupleClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
+        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
     }
 
     getDuples(): Observable<Duple[]> {
@@ -779,7 +779,7 @@ export class QuestionClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
+        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
     }
 
     getQuestions(): Observable<Question[]> {
@@ -909,7 +909,7 @@ export class WhittlersClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
+        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
     }
 
     getWhittlers(): Observable<Whittler[]> {

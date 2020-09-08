@@ -13,10 +13,10 @@ export class AuthService {
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
     createAuth0Client({
-      domain: "whittle-dev-ws.auth0.com",
-      client_id: "4oo4ElcjBRvCBuTDDkndXAyDniwwVUQT",
+      domain: "whittle-life-dev.auth0.com",
+      client_id: "CTadRzDqN7YeFQVztS3yOvfFpIgqiOk5",
       redirect_uri: `${window.location.origin}`,
-      audience: "https://api.whittle.life"
+      audience: "https://dev.local.api.whittle.life"
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
@@ -123,7 +123,7 @@ export class AuthService {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       // Call method to log out
       client.logout({
-        client_id: "4oo4ElcjBRvCBuTDDkndXAyDniwwVUQT",
+        client_id: "CTadRzDqN7YeFQVztS3yOvfFpIgqiOk5",
         returnTo: `${window.location.origin}`
       });
     });

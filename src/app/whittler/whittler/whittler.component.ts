@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, ViewChild } from '@angular/core';
-import { WhittlerClient, Question, Comparison } from 'src/app/core/services/whittle-api/whittle-api.service';
+import { Component, OnInit, Output, ViewChild, SystemJsNgModuleLoader } from '@angular/core';
+import { WhittlerClient, Question, Comparison, MembershipClient } from 'src/app/core/services/whittle-api/whittle-api.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { CircleComponent } from '../circle/circle.component';
 
@@ -17,10 +17,12 @@ export class WhittlerComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
+    private membershipClient: MembershipClient,
     private whittlerClient: WhittlerClient) { 
   }
 
   ngOnInit(): void {
+    this.membershipClient.registerSelf().subscribe();
   }
 
   onWhittle(choseA:boolean) {

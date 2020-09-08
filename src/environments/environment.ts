@@ -5,6 +5,9 @@
 export const environment = {
   production: false,
   API_BASE_URL: 'https://localhost:44340',  
+  AUTH0_DOMAIN: "whittle-dev-ws.auth0.com",
+  AUTH0_CLIENT_ID: "4oo4ElcjBRvCBuTDDkndXAyDniwwVUQT",
+  AUTH0_AUDIENCE: "https://api.whittle.life"
 };
 
 /*

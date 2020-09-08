@@ -1,12 +1,14 @@
 
 <div *ngIf="!outOfQuestions">
-    <mat-card (click)="chooseA()">
-        {{currentQuestion.duple.choiceA.name}}
-    </mat-card>
-    
-    <mat-card (click)="chooseB()">
-        {{currentQuestion.duple.choiceB.name}}
-    </mat-card>
+    <div *ngIf="currentQuestion">
+        <mat-card (click)="chooseA()">
+            {{currentQuestion.duple.choiceA.name}}
+        </mat-card>
+        
+        <mat-card (click)="chooseB()">
+            {{currentQuestion.duple.choiceB.name}}
+        </mat-card>
+    </div>
 </div>
 
 <div *ngIf="outOfQuestions">
