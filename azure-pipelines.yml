@@ -32,6 +32,6 @@ steps:
     azureSubscription: 'Pay-As-You-Go Dev/Test(42f4115a-76fd-4703-aa78-bdaa7b450689)'
     appType: 'webApp'
     appName: 'whittle-spa'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(Build.ArtifactStagingDirectory)/*.zip'
 
 
