@@ -1,15 +1,26 @@
-import { Injectable, InjectionToken, Optional, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
 
-  public whittleApiBaseUrl: string;
+  private appConfig;
 
-  constructor(@Optional() @Inject(API_BASE_URL) baseUrl?: string) { 
-    this.whittleApiBaseUrl = baseUrl;
+  constructor(private http: HttpClient) { }
+
+  loadAppConfig() {
+    return this.http
+      .get('/assets/config.json')
+      .toPromise()
+      .then((data) => {
+        this.appConfig = data;
+      });
+  }
+
+  getServerUrl(): string {
+    return this.appConfig.API_BASE_URL;
   }
 }

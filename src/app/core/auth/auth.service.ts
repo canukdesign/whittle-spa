@@ -14,7 +14,7 @@ export class AuthService {
   auth0Client$ = (from(
     createAuth0Client({
       domain: "whittle-life-dev.auth0.com",
-      client_id: "SnTQHIzev35QExhB12USSPHmLmkSk6By",
+      client_id: "CTadRzDqN7YeFQVztS3yOvfFpIgqiOk5",
       redirect_uri: `${window.location.origin}`,
       audience: "https://dev.local.api.whittle.life"
     })
@@ -123,7 +123,7 @@ export class AuthService {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       // Call method to log out
       client.logout({
-        client_id: "SnTQHIzev35QExhB12USSPHmLmkSk6By",
+        client_id: "CTadRzDqN7YeFQVztS3yOvfFpIgqiOk5",
         returnTo: `${window.location.origin}`
       });
     });

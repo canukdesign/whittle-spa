@@ -11,8 +11,8 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
+import { ConfigService } from '../../config/config.service';
 
-export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
     providedIn: 'root'
@@ -22,9 +22,12 @@ export class MembershipClient {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+    constructor(
+        @Inject(HttpClient) http: HttpClient, 
+        configService: ConfigService) {
+
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = configService.getServerUrl();
     }
 
     register(regModel: RegistrationModel): Observable<Whittler> {
@@ -150,9 +153,12 @@ export class WhittlerClient {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+    constructor(
+        @Inject(HttpClient) http: HttpClient, 
+        configService: ConfigService) {
+
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = configService.getServerUrl();
     }
 
     getProfile(): Observable<Profile> {
@@ -525,9 +531,12 @@ export class DupleClient {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+    constructor(
+        @Inject(HttpClient) http: HttpClient, 
+        configService: ConfigService) {
+
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = configService.getServerUrl();
     }
 
     getDuples(): Observable<Duple[]> {
@@ -777,9 +786,12 @@ export class QuestionClient {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+    constructor(
+        @Inject(HttpClient) http: HttpClient, 
+        configService: ConfigService) {
+
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = configService.getServerUrl();
     }
 
     getQuestions(): Observable<Question[]> {
@@ -907,9 +919,12 @@ export class WhittlersClient {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+    constructor(
+        @Inject(HttpClient) http: HttpClient, 
+        configService: ConfigService) {
+
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = configService.getServerUrl();
     }
 
     getWhittlers(): Observable<Whittler[]> {
