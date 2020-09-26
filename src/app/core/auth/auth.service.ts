@@ -5,6 +5,7 @@ import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from
 import { tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class AuthService {
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
     createAuth0Client({
-      domain: "whittle-life-dev.auth0.com",
-      client_id: "SnTQHIzev35QExhB12USSPHmLmkSk6By",
+      domain: this.configService.auth0Domain,
+      client_id: this.configService.auth0ClientId,
       redirect_uri: `${window.location.origin}`,
-      audience: "https://dev.local.api.whittle.life"
+      audience: this.configService.auth0Audience
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
@@ -43,7 +44,7 @@ export class AuthService {
 
   private helper = new JwtHelperService();
   
-  constructor(private router: Router) {
+  constructor(private configService: ConfigService, private router: Router) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
     this.localAuthSetup();
@@ -123,7 +124,7 @@ export class AuthService {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       // Call method to log out
       client.logout({
-        client_id: "SnTQHIzev35QExhB12USSPHmLmkSk6By",
+        client_id: this.configService.auth0ClientId,
         returnTo: `${window.location.origin}`
       });
     });

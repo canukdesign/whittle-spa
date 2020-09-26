@@ -6,11 +6,12 @@ import { WhittlerRoutingModule } from './whittler-routing.module';
 import { SharedModule } from '../core/shared.module';
 import { CircleComponent } from './circle/circle.component';
 import { WhittlerComponent } from './whittler/whittler.component';
+import { LandingComponent } from './landing/landing.component';
 
 
 
 @NgModule({
-  declarations: [WhittleComponent, WhittlerProfileComponent, CircleComponent, WhittlerComponent],
+  declarations: [WhittleComponent, WhittlerProfileComponent, CircleComponent, WhittlerComponent, LandingComponent],
   imports: [
     WhittlerRoutingModule,
     SharedModule

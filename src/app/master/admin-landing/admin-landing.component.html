@@ -3,16 +3,14 @@
         <button (click)="auth.logout()">Log Out</button>
     </div>
     <div *ngIf="auth.loggedIn === false">      
-        <button (click)="auth.login()">Log In</button>
+        <button (click)="auth.login('master')">Log In</button>
     </div>
 
 </header>
 
 <!-- <div class="bg"> -->
 
-    <h1>Whittle down to what's important in life...</h1>
+    <h1>Whittle while you work...</h1>
     <!-- <img src="/assets/whittlelogo.png"> -->
 
 <!-- </div> -->
-
-
