@@ -11,8 +11,8 @@ import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
+import { API_BASE_URL } from '../../config/config.service';
 
-export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +24,7 @@ export class MembershipClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
     }
 
     register(regModel: RegistrationModel): Observable<Whittler> {
@@ -152,7 +152,7 @@ export class WhittlerClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
     }
 
     getProfile(): Observable<Profile> {
@@ -515,6 +515,181 @@ export class WhittlerClient {
         }
         return _observableOf<Comparison[]>(<any>null);
     }
+
+    addFavourite(whittlerId: string | null): Observable<Favourite> {
+        let url_ = this.baseUrl + "/favourites/{whittlerId}/add";
+        if (whittlerId === undefined || whittlerId === null)
+            throw new Error("The parameter 'whittlerId' must be defined.");
+        url_ = url_.replace("{whittlerId}", encodeURIComponent("" + whittlerId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddFavourite(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddFavourite(<any>response_);
+                } catch (e) {
+                    return <Observable<Favourite>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Favourite>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddFavourite(response: HttpResponseBase): Observable<Favourite> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Favourite.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Favourite>(<any>null);
+    }
+
+    removeFavourite(whittlerId: string | null): Observable<Favourite> {
+        let url_ = this.baseUrl + "/favourites/{whittlerId}/remove";
+        if (whittlerId === undefined || whittlerId === null)
+            throw new Error("The parameter 'whittlerId' must be defined.");
+        url_ = url_.replace("{whittlerId}", encodeURIComponent("" + whittlerId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRemoveFavourite(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRemoveFavourite(<any>response_);
+                } catch (e) {
+                    return <Observable<Favourite>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Favourite>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRemoveFavourite(response: HttpResponseBase): Observable<Favourite> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Favourite.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Favourite>(<any>null);
+    }
+
+    getFavourites(): Observable<Comparison[]> {
+        let url_ = this.baseUrl + "/favourites";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFavourites(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFavourites(<any>response_);
+                } catch (e) {
+                    return <Observable<Comparison[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Comparison[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFavourites(response: HttpResponseBase): Observable<Comparison[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ErrorModel.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Comparison.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Comparison[]>(<any>null);
+    }
 }
 
 @Injectable({
@@ -527,7 +702,7 @@ export class DupleClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
     }
 
     getDuples(): Observable<Duple[]> {
@@ -779,7 +954,7 @@ export class QuestionClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
     }
 
     getQuestions(): Observable<Question[]> {
@@ -909,7 +1084,7 @@ export class WhittlersClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "https://whittle-api.azurewebsites.net";
+        this.baseUrl = baseUrl ? baseUrl : "https://localhost:44340";
     }
 
     getWhittlers(): Observable<Whittler[]> {
@@ -1214,14 +1389,16 @@ export interface IErrorModel {
 
 export class Whittler implements IWhittler {
     id?: string | undefined;
+    answers?: BitVector | undefined;
     city?: string | undefined;
     country?: string | undefined;
     email?: string | undefined;
+    favourites?: Favourite[] | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
     memberSince!: Date;
     orderOfNextQuestion!: number;
-    answers?: BitVector | undefined;
+    sexualOrientation?: SexualOrientation | undefined;
 
     constructor(data?: IWhittler) {
         if (data) {
@@ -1235,14 +1412,20 @@ export class Whittler implements IWhittler {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.answers = _data["answers"] ? BitVector.fromJS(_data["answers"]) : <any>undefined;
             this.city = _data["city"];
             this.country = _data["country"];
             this.email = _data["email"];
+            if (Array.isArray(_data["favourites"])) {
+                this.favourites = [] as any;
+                for (let item of _data["favourites"])
+                    this.favourites!.push(Favourite.fromJS(item));
+            }
             this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
             this.memberSince = _data["memberSince"] ? new Date(_data["memberSince"].toString()) : <any>undefined;
             this.orderOfNextQuestion = _data["orderOfNextQuestion"];
-            this.answers = _data["answers"] ? BitVector.fromJS(_data["answers"]) : <any>undefined;
+            this.sexualOrientation = _data["sexualOrientation"];
         }
     }
 
@@ -1256,28 +1439,36 @@ export class Whittler implements IWhittler {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["answers"] = this.answers ? this.answers.toJSON() : <any>undefined;
         data["city"] = this.city;
         data["country"] = this.country;
         data["email"] = this.email;
+        if (Array.isArray(this.favourites)) {
+            data["favourites"] = [];
+            for (let item of this.favourites)
+                data["favourites"].push(item.toJSON());
+        }
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
         data["memberSince"] = this.memberSince ? this.memberSince.toISOString() : <any>undefined;
         data["orderOfNextQuestion"] = this.orderOfNextQuestion;
-        data["answers"] = this.answers ? this.answers.toJSON() : <any>undefined;
+        data["sexualOrientation"] = this.sexualOrientation;
         return data; 
     }
 }
 
 export interface IWhittler {
     id?: string | undefined;
+    answers?: BitVector | undefined;
     city?: string | undefined;
     country?: string | undefined;
     email?: string | undefined;
+    favourites?: Favourite[] | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
     memberSince: Date;
     orderOfNextQuestion: number;
-    answers?: BitVector | undefined;
+    sexualOrientation?: SexualOrientation | undefined;
 }
 
 export class BitVector implements IBitVector {
@@ -1328,6 +1519,60 @@ export interface IBitVector {
     size: number;
 }
 
+export class Favourite implements IFavourite {
+    whittlerId?: string | undefined;
+    connected!: boolean;
+    favouriteSince!: Date;
+    starred!: boolean;
+
+    constructor(data?: IFavourite) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.whittlerId = _data["whittlerId"];
+            this.connected = _data["connected"];
+            this.favouriteSince = _data["favouriteSince"] ? new Date(_data["favouriteSince"].toString()) : <any>undefined;
+            this.starred = _data["starred"];
+        }
+    }
+
+    static fromJS(data: any): Favourite {
+        data = typeof data === 'object' ? data : {};
+        let result = new Favourite();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["whittlerId"] = this.whittlerId;
+        data["connected"] = this.connected;
+        data["favouriteSince"] = this.favouriteSince ? this.favouriteSince.toISOString() : <any>undefined;
+        data["starred"] = this.starred;
+        return data; 
+    }
+}
+
+export interface IFavourite {
+    whittlerId?: string | undefined;
+    connected: boolean;
+    favouriteSince: Date;
+    starred: boolean;
+}
+
+export enum SexualOrientation {
+    Female = "Female",
+    Male = "Male",
+    UnSpecifie = "UnSpecifie",
+}
+
 export class RegistrationModel implements IRegistrationModel {
     email?: string | undefined;
 
@@ -1370,6 +1615,7 @@ export class Profile implements IProfile {
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
+    sexualOrientation?: SexualOrientation | undefined;
 
     constructor(data?: IProfile) {
         if (data) {
@@ -1387,6 +1633,7 @@ export class Profile implements IProfile {
             this.email = _data["email"];
             this.firstName = _data["firstName"];
             this.lastName = _data["lastName"];
+            this.sexualOrientation = _data["sexualOrientation"];
         }
     }
 
@@ -1404,6 +1651,7 @@ export class Profile implements IProfile {
         data["email"] = this.email;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
+        data["sexualOrientation"] = this.sexualOrientation;
         return data; 
     }
 }
@@ -1414,6 +1662,7 @@ export interface IProfile {
     email?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
+    sexualOrientation?: SexualOrientation | undefined;
 }
 
 export class Answer implements IAnswer {
@@ -1594,7 +1843,14 @@ export interface IChoice {
 
 export class Comparison implements IComparison {
     whittlerId?: string | undefined;
-    whittlerFirstName?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    email?: string | undefined;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    memberSince!: Date;
+    orderOfNextQuestion?: string | undefined;
+    sexualOrientation?: string | undefined;
     similarity!: number;
 
     constructor(data?: IComparison) {
@@ -1609,7 +1865,14 @@ export class Comparison implements IComparison {
     init(_data?: any) {
         if (_data) {
             this.whittlerId = _data["whittlerId"];
-            this.whittlerFirstName = _data["whittlerFirstName"];
+            this.city = _data["city"];
+            this.country = _data["country"];
+            this.email = _data["email"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.memberSince = _data["memberSince"] ? new Date(_data["memberSince"].toString()) : <any>undefined;
+            this.orderOfNextQuestion = _data["orderOfNextQuestion"];
+            this.sexualOrientation = _data["sexualOrientation"];
             this.similarity = _data["similarity"];
         }
     }
@@ -1624,7 +1887,14 @@ export class Comparison implements IComparison {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["whittlerId"] = this.whittlerId;
-        data["whittlerFirstName"] = this.whittlerFirstName;
+        data["city"] = this.city;
+        data["country"] = this.country;
+        data["email"] = this.email;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["memberSince"] = this.memberSince ? this.memberSince.toISOString() : <any>undefined;
+        data["orderOfNextQuestion"] = this.orderOfNextQuestion;
+        data["sexualOrientation"] = this.sexualOrientation;
         data["similarity"] = this.similarity;
         return data; 
     }
@@ -1632,7 +1902,14 @@ export class Comparison implements IComparison {
 
 export interface IComparison {
     whittlerId?: string | undefined;
-    whittlerFirstName?: string | undefined;
+    city?: string | undefined;
+    country?: string | undefined;
+    email?: string | undefined;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    memberSince: Date;
+    orderOfNextQuestion?: string | undefined;
+    sexualOrientation?: string | undefined;
     similarity: number;
 }
 

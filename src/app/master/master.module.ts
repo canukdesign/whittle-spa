@@ -8,10 +8,11 @@ import { ListDuplesComponent } from './duples/list-duples/list-duples.component'
 import { AddDupleComponent } from './duples/add-duple/add-duple.component';
 import { UpdateDupleComponent } from './duples/update-duple/update-duple.component';
 import { MasterComponent } from './master/master.component';
+import { AdminLandingComponent } from './admin-landing/admin-landing.component';
 
 
 @NgModule({
-  declarations: [AddDupleComponent, UpdateDupleComponent, ListDuplesComponent, AddQuestionComponent, ListQuestionsComponent, MasterComponent],
+  declarations: [AddDupleComponent, UpdateDupleComponent, ListDuplesComponent, AddQuestionComponent, ListQuestionsComponent, MasterComponent, AdminLandingComponent],
   imports: [
     CommonModule,
     MasterRoutingModule,
